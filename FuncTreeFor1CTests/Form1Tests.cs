@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FuncTreeFor1C.classes;
 
 namespace FuncTreeFor1C.Tests
 {
@@ -115,7 +116,7 @@ namespace FuncTreeFor1C.Tests
             ");
             Assert.IsTrue(resut.Count() == 2);
             Assert.AreEqual("тест", resut[0].Name);
-            Assert.IsTrue(resut[0].Descript.Count() == 0);
+            Assert.AreEqual(null, resut[0].Descript);
             Assert.AreEqual("тест3", resut[1].Name);
             Assert.IsTrue(resut[1].Descript.Count() == 2);
             Assert.IsTrue(resut[1].Descript[0] == " описание1  функция 11");
@@ -124,7 +125,11 @@ namespace FuncTreeFor1C.Tests
         public void ParseStringsTest10()
         {
             var resut = NewParse(@"
-                
+
+                // Тут тоже описание
+                //
+                // Тут еще описаение                
+
                 // Описание тест 1
                 процедура тест 1
                 // описание1  функция 11
@@ -134,8 +139,8 @@ namespace FuncTreeFor1C.Tests
             ");
             Assert.IsTrue(resut.Count() == 2);
             Assert.AreEqual("тест 1", resut[0].Name);
-            Assert.IsTrue(resut[0].Descript.Count() == 1);
-            Assert.IsTrue(resut[0].Descript[0] == " Описание тест 1");
+            Assert.IsTrue(resut[0].Descript.Count() == 3);
+            Assert.IsTrue(resut[0].Descript[0] == " Тут тоже описание");
 
             Assert.AreEqual("тест3", resut[1].Name);
             Assert.IsTrue(resut[1].Descript.Count() == 2);
