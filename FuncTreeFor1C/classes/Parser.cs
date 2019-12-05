@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -12,6 +13,33 @@ namespace FuncTreeFor1C.classes
     {
         const string strProc = "процедура";
         const string strFunc = "функция";
+        const string strExport = "экспорт";
+
+        /// <summary>
+        /// Для каждого файла из массива files вызывает парсинг
+        /// </summary>
+        /// <param name="files"></param>
+        /// <param name="cutPathLength"></param>
+        /// <returns></returns>
+        public static ListFunction ParseFiles(FileInfo[] files, int cutPathLength = 0)
+        {
+            var result = new ListFunction();
+
+            foreach (var file in files)
+            {
+                var text = File.ReadAllLines(file.FullName);
+                var newListFunction = ParseStrings(text);
+                if (newListFunction.Count() > 0)
+                {
+                    foreach (var item in newListFunction)
+                    {
+                        item.FileName = file.FullName.Substring(cutPathLength);
+                        result.Add(item);
+                    }
+                }
+            }
+            return result;
+        }
 
         /// <summary>
         /// Парсит переданный текст на наличие функций и процедур
@@ -28,10 +56,17 @@ namespace FuncTreeFor1C.classes
                 var str = text[index].Trim();
                 var strLow = str.ToLower();
                 var indexStartName = 0;
+                TypeFunction typeFunc = TypeFunction.function;
+
                 if (strLow.IndexOf(strProc) == 0)
+                {
                     indexStartName = strProc.Length;
+                    typeFunc = TypeFunction.procedure;
+                }
                 else if (strLow.IndexOf(strFunc) == 0)
-                    indexStartName = strFunc.Length;
+                {
+                    indexStartName = strFunc.Length;                 
+                }
 
                 if (indexStartName > 0)
                 {
@@ -44,13 +79,15 @@ namespace FuncTreeFor1C.classes
                             firstBracket = strLow.Length;
                         }
                     }
-
+                    var export = strLow.IndexOf(strExport) >= 0;
                     var secondBracket = strLow.IndexOf(')');
+
                     if (indexStartName > 0)
                     {
                         var newFunction = new FunctionInfo();
                         newFunction.Name = str.Substring(indexStartName, firstBracket - indexStartName).Trim();
                         newFunction.Descript = GetDescriptFunction(text, index);
+                        newFunction.Type = typeFunc;
                         result.Add(newFunction);
                     }
                 }
@@ -73,8 +110,8 @@ namespace FuncTreeFor1C.classes
             {
                 indStart--;
                 var strDesc = text[indStart].Trim();
-                if (strDesc.Length > 2
-                    && strDesc.Substring(0, 2) != "//")
+                if ((strDesc.Length > 2 && strDesc.Substring(0, 2) != "//")
+                    || strDesc.Length == 0)
                 {
                     indStart++;
                     break;

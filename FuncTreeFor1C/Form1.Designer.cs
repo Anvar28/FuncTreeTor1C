@@ -34,12 +34,15 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btnSelectPath = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.treeView1 = new System.Windows.Forms.TreeView();
-            this.splitter1 = new System.Windows.Forms.Splitter();
-            this.tbDescript = new System.Windows.Forms.TextBox();
-            this.tbText = new System.Windows.Forms.TextBox();
             this.splitter2 = new System.Windows.Forms.Splitter();
+            this.tbText = new System.Windows.Forms.TextBox();
+            this.tbDescript = new System.Windows.Forms.TextBox();
+            this.splitter1 = new System.Windows.Forms.Splitter();
+            this.treeView1 = new System.Windows.Forms.TreeView();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.lbLog = new System.Windows.Forms.ListBox();
             this.panel1.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tbPath
@@ -68,6 +71,7 @@
             this.tbFind.Size = new System.Drawing.Size(395, 22);
             this.tbFind.TabIndex = 0;
             this.tbFind.TextChanged += new System.EventHandler(this.TbFind_TextChanged);
+            this.tbFind.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TbFind_KeyPress);
             // 
             // label2
             // 
@@ -102,25 +106,26 @@
             this.panel1.Controls.Add(this.treeView1);
             this.panel1.Location = new System.Drawing.Point(3, 76);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(995, 478);
+            this.panel1.Size = new System.Drawing.Size(995, 202);
             this.panel1.TabIndex = 6;
             // 
-            // treeView1
+            // splitter2
             // 
-            this.treeView1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.treeView1.Location = new System.Drawing.Point(0, 0);
-            this.treeView1.Margin = new System.Windows.Forms.Padding(4);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(306, 478);
-            this.treeView1.TabIndex = 3;
+            this.splitter2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.splitter2.Location = new System.Drawing.Point(311, 164);
+            this.splitter2.Name = "splitter2";
+            this.splitter2.Size = new System.Drawing.Size(684, 6);
+            this.splitter2.TabIndex = 9;
+            this.splitter2.TabStop = false;
             // 
-            // splitter1
+            // tbText
             // 
-            this.splitter1.Location = new System.Drawing.Point(306, 0);
-            this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(5, 478);
-            this.splitter1.TabIndex = 6;
-            this.splitter1.TabStop = false;
+            this.tbText.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbText.Location = new System.Drawing.Point(311, 164);
+            this.tbText.Multiline = true;
+            this.tbText.Name = "tbText";
+            this.tbText.Size = new System.Drawing.Size(684, 38);
+            this.tbText.TabIndex = 8;
             // 
             // tbDescript
             // 
@@ -132,29 +137,50 @@
             this.tbDescript.TabIndex = 7;
             this.tbDescript.WordWrap = false;
             // 
-            // tbText
+            // splitter1
             // 
-            this.tbText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbText.Location = new System.Drawing.Point(311, 164);
-            this.tbText.Multiline = true;
-            this.tbText.Name = "tbText";
-            this.tbText.Size = new System.Drawing.Size(684, 314);
-            this.tbText.TabIndex = 8;
+            this.splitter1.Location = new System.Drawing.Point(306, 0);
+            this.splitter1.Name = "splitter1";
+            this.splitter1.Size = new System.Drawing.Size(5, 202);
+            this.splitter1.TabIndex = 6;
+            this.splitter1.TabStop = false;
             // 
-            // splitter2
+            // treeView1
             // 
-            this.splitter2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.splitter2.Location = new System.Drawing.Point(311, 164);
-            this.splitter2.Name = "splitter2";
-            this.splitter2.Size = new System.Drawing.Size(684, 6);
-            this.splitter2.TabIndex = 9;
-            this.splitter2.TabStop = false;
+            this.treeView1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.treeView1.Location = new System.Drawing.Point(0, 0);
+            this.treeView1.Margin = new System.Windows.Forms.Padding(4);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.Size = new System.Drawing.Size(306, 202);
+            this.treeView1.TabIndex = 3;
+            this.treeView1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TreeView1_KeyPress);
+            // 
+            // panel2
+            // 
+            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel2.Controls.Add(this.lbLog);
+            this.panel2.Location = new System.Drawing.Point(3, 285);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(995, 65);
+            this.panel2.TabIndex = 7;
+            // 
+            // lbLog
+            // 
+            this.lbLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbLog.FormattingEnabled = true;
+            this.lbLog.ItemHeight = 16;
+            this.lbLog.Location = new System.Drawing.Point(0, 0);
+            this.lbLog.Name = "lbLog";
+            this.lbLog.Size = new System.Drawing.Size(995, 65);
+            this.lbLog.TabIndex = 0;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1003, 559);
+            this.ClientSize = new System.Drawing.Size(1003, 351);
+            this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.btnSelectPath);
             this.Controls.Add(this.label2);
@@ -167,6 +193,7 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -185,6 +212,8 @@
         private System.Windows.Forms.TextBox tbDescript;
         private System.Windows.Forms.Splitter splitter1;
         private System.Windows.Forms.TreeView treeView1;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.ListBox lbLog;
     }
 }
 

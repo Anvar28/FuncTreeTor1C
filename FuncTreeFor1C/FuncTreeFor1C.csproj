@@ -43,7 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="classes\Searcher.cs" />
+    <Compile Include="classes\Loger.cs" />
+    <Compile Include="classes\FileSearcher.cs" />
     <Compile Include="classes\Parser.cs" />
     <Compile Include="classes\ListFunction.cs" />
     <Compile Include="classes\FunctionInfo.cs" />

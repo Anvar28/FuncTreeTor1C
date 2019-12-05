@@ -132,15 +132,15 @@ namespace FuncTreeFor1C.Tests
 
                 // Описание тест 1
                 процедура тест 1
-                // описание1  функция 11
 
+                // описание1  функция 11
                 // описание1
                 функция тест3 ()   
             ");
             Assert.IsTrue(resut.Count() == 2);
             Assert.AreEqual("тест 1", resut[0].Name);
-            Assert.IsTrue(resut[0].Descript.Count() == 3);
-            Assert.IsTrue(resut[0].Descript[0] == " Тут тоже описание");
+            Assert.IsTrue(resut[0].Descript.Count() == 1);
+            Assert.IsTrue(resut[0].Descript[0] == " Описание тест 1");
 
             Assert.AreEqual("тест3", resut[1].Name);
             Assert.IsTrue(resut[1].Descript.Count() == 2);

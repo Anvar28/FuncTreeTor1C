@@ -5,6 +5,12 @@ using System.Text;
 
 namespace FuncTreeFor1C.classes
 {
+    public enum TypeFunction
+    {
+        function,
+        procedure
+    }
+
     /// <summary>
     /// Данные о функции, ее описание и параметры
     /// </summary>
@@ -15,5 +21,7 @@ namespace FuncTreeFor1C.classes
         public List<string> Descript { get; set; }
         public List<string> Text { get; set; }
         public bool Export { get; set; }
+        public TypeFunction Type { get; set; }
+
     }
 }
