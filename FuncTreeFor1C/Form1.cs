@@ -21,7 +21,7 @@ namespace FuncTreeFor1C
 
         public Form1()
         {
-            loger = new LogerFile(Path.Combine(Assembly.GetExecutingAssembly().Location, "log.txt"));
+            loger = new LogerFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "log.txt"));
             InitializeComponent();
         }
 

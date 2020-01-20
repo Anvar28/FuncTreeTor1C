@@ -39,10 +39,8 @@
             this.tbDescript = new System.Windows.Forms.TextBox();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.treeView1 = new System.Windows.Forms.TreeView();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.lbLog = new System.Windows.Forms.ListBox();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tbPath
@@ -106,7 +104,7 @@
             this.panel1.Controls.Add(this.treeView1);
             this.panel1.Location = new System.Drawing.Point(3, 76);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(995, 202);
+            this.panel1.Size = new System.Drawing.Size(995, 345);
             this.panel1.TabIndex = 6;
             // 
             // splitter2
@@ -124,7 +122,7 @@
             this.tbText.Location = new System.Drawing.Point(311, 164);
             this.tbText.Multiline = true;
             this.tbText.Name = "tbText";
-            this.tbText.Size = new System.Drawing.Size(684, 38);
+            this.tbText.Size = new System.Drawing.Size(684, 181);
             this.tbText.TabIndex = 8;
             // 
             // tbDescript
@@ -141,7 +139,7 @@
             // 
             this.splitter1.Location = new System.Drawing.Point(306, 0);
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(5, 202);
+            this.splitter1.Size = new System.Drawing.Size(5, 345);
             this.splitter1.TabIndex = 6;
             this.splitter1.TabStop = false;
             // 
@@ -151,36 +149,25 @@
             this.treeView1.Location = new System.Drawing.Point(0, 0);
             this.treeView1.Margin = new System.Windows.Forms.Padding(4);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(306, 202);
+            this.treeView1.Size = new System.Drawing.Size(306, 345);
             this.treeView1.TabIndex = 3;
             this.treeView1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TreeView1_KeyPress);
             // 
-            // panel2
+            // statusStrip1
             // 
-            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel2.Controls.Add(this.lbLog);
-            this.panel2.Location = new System.Drawing.Point(3, 285);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(995, 65);
-            this.panel2.TabIndex = 7;
-            // 
-            // lbLog
-            // 
-            this.lbLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbLog.FormattingEnabled = true;
-            this.lbLog.ItemHeight = 16;
-            this.lbLog.Location = new System.Drawing.Point(0, 0);
-            this.lbLog.Name = "lbLog";
-            this.lbLog.Size = new System.Drawing.Size(995, 65);
-            this.lbLog.TabIndex = 0;
+            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 422);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1003, 24);
+            this.statusStrip1.TabIndex = 11;
+            this.statusStrip1.Text = "statusStrip1";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1003, 351);
-            this.Controls.Add(this.panel2);
+            this.ClientSize = new System.Drawing.Size(1003, 446);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.btnSelectPath);
             this.Controls.Add(this.label2);
@@ -193,7 +180,6 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -212,8 +198,7 @@
         private System.Windows.Forms.TextBox tbDescript;
         private System.Windows.Forms.Splitter splitter1;
         private System.Windows.Forms.TreeView treeView1;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.ListBox lbLog;
+        private System.Windows.Forms.StatusStrip statusStrip1;
     }
 }
 
