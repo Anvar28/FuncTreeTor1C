@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FuncTreeFor1C
@@ -18,6 +19,10 @@ namespace FuncTreeFor1C
     {
         ListFunction listFunction;
         ILoger loger;
+
+        const string strFindFiles = "Поиск файлов...";
+        const string strParse = "Парсинг...";
+        const string strFillTree = "Заполнение дерева...";
 
         public Form1()
         {
@@ -47,6 +52,25 @@ namespace FuncTreeFor1C
             Log(text + (sw.ElapsedMilliseconds / 1000).ToString());
         }
 
+        public void UpdateStatusText(string text)
+        {
+            if (statusBar.Text != text)
+            {
+                statusBar.Text = text;
+            }
+        }
+
+        public void UpdateStatusPercent(byte percent)
+        {
+            if (percent > 100)
+                percent = 100;
+
+            if (percent != progressBar.Value)
+            {
+                progressBar.Value = percent;
+            }
+        }
+
         private Stopwatch StopwatchStart()
         {
             Stopwatch sw = new Stopwatch();
@@ -54,31 +78,63 @@ namespace FuncTreeFor1C
             return sw;
         }
 
-        private void FindFilesAndParsing(string path)
+        private async void FindFilesAndParsing(string path)
         {
-            var sw = StopwatchStart();
+            new Task(() =>
+            {
+                // Поиск файлов
 
-            var files = FileSearcher.Search(path);
+                this.BeginInvoke((MethodInvoker)(() => UpdateStatusText(strFindFiles)));
 
-            LogStopwatch("Сканирование файлов: ", sw);
+                var sw = StopwatchStart();
 
-            sw.Start();
+                var files = FileSearcher.Search(
+                    path, 
+                    (percent) => {
+                        this.BeginInvoke((MethodInvoker)(() => UpdateStatusPercent(percent)));
+                    }
+                );
 
-            listFunction = Parser.ParseFiles(files, path.Length);
+                LogStopwatch("Сканирование файлов: ", sw);
 
-            LogStopwatch("Парсинг файлов: ", sw);
+                // Парсинг
 
-            FillTree();
+                this.BeginInvoke((MethodInvoker)(() => UpdateStatusText(strParse)));
+
+                sw.Start();
+
+                listFunction = Parser.ParseFiles(
+                    files, 
+                    (percent) => {
+                        this.BeginInvoke((MethodInvoker)(() => UpdateStatusPercent(percent)));
+                    }, 
+                    path.Length
+                );
+
+                LogStopwatch("Парсинг файлов: ", sw);
+
+                // Заполняем дерево
+
+                this.BeginInvoke((MethodInvoker)(() => FillTree()));
+                
+            })
+                .Start();
         }
 
         public void FillTree(string strFilter = "")
         {
+
+            UpdateStatusText(strFillTree);
+
             var sw = StopwatchStart();
 
-            treeView1.BeginUpdate();
-            treeView1.Nodes.Clear();
-
             var treeViewNodes = treeView1.Nodes;
+
+            treeView1.BeginUpdate();
+            treeViewNodes.Clear();
+
+            // Фильтруем дерево
+
             var select = listFunction.List
                 .Where(x =>
                     (strFilter.Length > 0 && x.Name.IndexOf(strFilter, StringComparison.OrdinalIgnoreCase) != -1)
@@ -86,6 +142,12 @@ namespace FuncTreeFor1C
                 )
                 .GroupBy(x => x.FileName)
                 .OrderBy(x => x.Key);
+
+
+            // Создаем ноды
+
+            var countAll = select.Count();
+            var count = 0;
 
             foreach (var functions in select)
             {
@@ -95,6 +157,8 @@ namespace FuncTreeFor1C
                     var newNode = newNodeGorup.Nodes.Add(function.Name);
                     newNode.Tag = function;
                 }
+                count++;
+                UpdateStatusPercent((byte)((float)count/countAll*100));
             }
             treeView1.EndUpdate();
             LogStopwatch("Заполнение дерева: ", sw);

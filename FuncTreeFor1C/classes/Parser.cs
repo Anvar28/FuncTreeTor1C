@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace FuncTreeFor1C.classes
 {
@@ -15,29 +18,47 @@ namespace FuncTreeFor1C.classes
         const string strFunc = "функция";
         const string strExport = "экспорт";
 
+        const string extensionBSL = ".bsl";
+
         /// <summary>
         /// Для каждого файла из массива files вызывает парсинг
         /// </summary>
         /// <param name="files"></param>
         /// <param name="cutPathLength"></param>
         /// <returns></returns>
-        public static ListFunction ParseFiles(FileInfo[] files, int cutPathLength = 0)
+        public static ListFunction ParseFiles(FileInfo[] files, UpdateStatus updateStatus, int cutPathLength = 0)
         {
             var result = new ListFunction();
+            var countAll = files.Count();
+            var count = 0;
+            object locker = new Object();
 
-            foreach (var file in files)
+            Parallel.ForEach(files, (file) =>
             {
-                var text = File.ReadAllLines(file.FullName);
-                var newListFunction = ParseStrings(text);
-                if (newListFunction.Count() > 0)
+                lock (locker)
                 {
-                    foreach (var item in newListFunction)
+                    count++;
+                    updateStatus((byte)((float)count / countAll * 100));
+                }
+
+                if (file.Extension == extensionBSL)
+                {
+                    var text = File.ReadAllLines(file.FullName);
+                    var newListFunction = ParseStrings(text);
+                    if (newListFunction.Count() > 0)
                     {
-                        item.FileName = file.FullName.Substring(cutPathLength);
-                        result.Add(item);
+                        foreach (var item in newListFunction)
+                        {
+                            item.FileName = file.FullName.Substring(cutPathLength);
+                            lock (result)
+                            {
+                                result.Add(item);
+                            }
+                        }
                     }
                 }
-            }
+            });
+
             return result;
         }
 
@@ -58,6 +79,7 @@ namespace FuncTreeFor1C.classes
                 var indexStartName = 0;
                 TypeFunction typeFunc = TypeFunction.function;
 
+                // Определяем процедура или функция.
                 if (strLow.IndexOf(strProc) == 0)
                 {
                     indexStartName = strProc.Length;
@@ -82,14 +104,12 @@ namespace FuncTreeFor1C.classes
                     var export = strLow.IndexOf(strExport) >= 0;
                     var secondBracket = strLow.IndexOf(')');
 
-                    if (indexStartName > 0)
-                    {
-                        var newFunction = new FunctionInfo();
-                        newFunction.Name = str.Substring(indexStartName, firstBracket - indexStartName).Trim();
-                        newFunction.Descript = GetDescriptFunction(text, index);
-                        newFunction.Type = typeFunc;
-                        result.Add(newFunction);
-                    }
+                    var newFunction = new FunctionInfo();
+                    newFunction.Name = str.Substring(indexStartName, firstBracket - indexStartName).Trim();
+                    newFunction.Descript = GetDescriptFunction(text, index);
+                    newFunction.Type = typeFunc;
+                    newFunction.IndexStart = indexStartName;
+                    result.Add(newFunction);
                 }
                 index++;
             }

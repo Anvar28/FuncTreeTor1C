@@ -11,18 +11,21 @@ namespace FuncTreeFor1C.classes
     /// </summary>
     public class FileSearcher
     {
-        const string filterExt = "*.bsl";
+        const string filterExt = "*.*";
 
         /// <summary>
         /// Поиск файлов в выбранной папке (рекурсивно) и заполнение списка файлов с расширением bsl
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static FileInfo[] Search(string path)
+        public static FileInfo[] Search(string path, UpdateStatus updateStatus)
         {
             var fileList = new List<FileInfo>();
             DirectoryInfo DI = new DirectoryInfo(path);
             fileList.AddRange(DI.GetFiles(filterExt, SearchOption.AllDirectories));
+
+            updateStatus(100);
+
             return fileList.ToArray();
         }
     }

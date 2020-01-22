@@ -23,5 +23,9 @@ namespace FuncTreeFor1C.classes
         public bool Export { get; set; }
         public TypeFunction Type { get; set; }
 
+        /// <summary>
+        /// Строка с которой начинается функция в файле
+        /// </summary>
+        public int IndexStart { get; set; }
     }
 }
