@@ -12,13 +12,14 @@ namespace FuncTreeFor1C.Tests
     [TestClass()]
     public class Form1Tests
     {
-        private ListFunction NewParse(string str, string separator = "\r\n")
+        private FunctionList NewParse(string str, string separator = "\r\n")
         {
-            return Parser.ParseStrings(
+            return Parser.Parse(
                 str.Split(
                     new string[] { separator },
                     StringSplitOptions.RemoveEmptyEntries
-                )
+                ),
+                null
             );
         }
 

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace FuncTreeFor1C.classes
 {
     /// <summary>
-    /// Осуществляет парсинг текста файла
+    /// Осуществляет парсинг текста
     /// </summary>
     public class Parser
     {
@@ -18,58 +18,14 @@ namespace FuncTreeFor1C.classes
         const string strFunc = "функция";
         const string strExport = "экспорт";
 
-        const string extensionBSL = ".bsl";
-
-        /// <summary>
-        /// Для каждого файла из массива files вызывает парсинг
-        /// </summary>
-        /// <param name="files"></param>
-        /// <param name="cutPathLength"></param>
-        /// <returns></returns>
-        public static ListFunction ParseFiles(FileInfo[] files, UpdateStatus updateStatus, int cutPathLength = 0)
-        {
-            var result = new ListFunction();
-            var countAll = files.Count();
-            var count = 0;
-            object locker = new Object();
-
-            Parallel.ForEach(files, (file) =>
-            {
-                lock (locker)
-                {
-                    count++;
-                    updateStatus((byte)((float)count / countAll * 100));
-                }
-
-                if (file.Extension == extensionBSL)
-                {
-                    var text = File.ReadAllLines(file.FullName);
-                    var newListFunction = ParseStrings(text);
-                    if (newListFunction.Count() > 0)
-                    {
-                        foreach (var item in newListFunction)
-                        {
-                            item.FileName = file.FullName.Substring(cutPathLength);
-                            lock (result)
-                            {
-                                result.Add(item);
-                            }
-                        }
-                    }
-                }
-            });
-
-            return result;
-        }
-
         /// <summary>
         /// Парсит переданный текст на наличие функций и процедур
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public static ListFunction ParseStrings(string[] text)
+        public static FunctionList Parse(string[] text, FileModule fileModule)
         {
-            var result = new ListFunction();
+            var result = new FunctionList(fileModule);
             var countLines = text.Count();
             var index = 0;
             while (index < countLines)
@@ -104,7 +60,7 @@ namespace FuncTreeFor1C.classes
                     var export = strLow.IndexOf(strExport) >= 0;
                     var secondBracket = strLow.IndexOf(')');
 
-                    var newFunction = new FunctionInfo();
+                    var newFunction = new FunctionInfo(result);
                     newFunction.Name = str.Substring(indexStartName, firstBracket - indexStartName).Trim();
                     newFunction.Descript = GetDescriptFunction(text, index);
                     newFunction.Type = typeFunc;

@@ -17,12 +17,14 @@ namespace FuncTreeFor1C
 {
     public partial class Form1 : Form
     {
-        ListFunction listFunction;
+        FileTypesList listFiles;
+        FinderList finderList;
         ILoger loger;
 
         const string strFindFiles = "Поиск файлов...";
         const string strParse = "Парсинг...";
         const string strFillTree = "Заполнение дерева...";
+        const string strPrepareTreeNode = "Подготовка дерева...";
 
         public Form1()
         {
@@ -78,45 +80,90 @@ namespace FuncTreeFor1C
             return sw;
         }
 
-        private async void FindFilesAndParsing(string path)
+        private void FindFilesAndParsing(string path)
         {
             new Task(() =>
             {
+                //
                 // Поиск файлов
+                //
 
                 this.BeginInvoke((MethodInvoker)(() => UpdateStatusText(strFindFiles)));
 
                 var sw = StopwatchStart();
 
                 var files = FileSearcher.Search(
-                    path, 
-                    (percent) => {
+                    path,
+                    (percent) =>
+                    {
                         this.BeginInvoke((MethodInvoker)(() => UpdateStatusPercent(percent)));
                     }
                 );
 
                 LogStopwatch("Сканирование файлов: ", sw);
 
+                //
                 // Парсинг
+                //
 
                 this.BeginInvoke((MethodInvoker)(() => UpdateStatusText(strParse)));
 
                 sw.Start();
 
-                listFunction = Parser.ParseFiles(
-                    files, 
-                    (percent) => {
+                var parserFile = new ParserFile();
+
+                listFiles = parserFile.ParseFiles(
+                    files,
+                    (percent) =>
+                    {
                         this.BeginInvoke((MethodInvoker)(() => UpdateStatusPercent(percent)));
-                    }, 
-                    path.Length
+                    }
                 );
 
                 LogStopwatch("Парсинг файлов: ", sw);
 
+                //
+                // Создаем список поисковика, в него будем помещать все объекты по которым необходимо будет делать поиск
+                // 
+
+                var countAll = listFiles.Count();
+                var count = 0;
+
+                var separetor = new char[] { '\\' };
+                finderList = new FinderList();
+
+                var countCutFullPath = path.Length;
+
+                foreach (var file in listFiles)
+                {
+                    var mParents = file.FullName.Substring(countCutFullPath).Split(separetor);
+
+                    if (file is FileModule)
+                    {
+                        var fileModule = (FileModule)file;
+                        foreach (var item in fileModule.FunctionList)
+                        {
+                            var newFinderItem = finderList.Add(item.Name, item);
+                            newFinderItem.Parents.AddRange(mParents);
+                        }
+                    }
+                    else
+                    {
+                        var newFinderItem = finderList.Add(file.Name, file);
+                        newFinderItem.Parents.AddRange(mParents);
+                    }
+                    count++;
+                    var percent = (byte)((float)count / countAll * 100);
+                    this.BeginInvoke((MethodInvoker)(() => UpdateStatusPercent(percent)));
+                }
+                LogStopwatch("Создание списка поисковика: ", sw);
+
+                //
                 // Заполняем дерево
+                //
 
                 this.BeginInvoke((MethodInvoker)(() => FillTree()));
-                
+
             })
                 .Start();
         }
@@ -124,7 +171,8 @@ namespace FuncTreeFor1C
         public void FillTree(string strFilter = "")
         {
 
-            UpdateStatusText(strFillTree);
+            UpdateStatusText("Фильтрация");
+            UpdateStatusPercent(0);
 
             var sw = StopwatchStart();
 
@@ -133,39 +181,103 @@ namespace FuncTreeFor1C
             treeView1.BeginUpdate();
             treeViewNodes.Clear();
 
+            //
             // Фильтруем дерево
+            //
 
-            var select = listFunction.List
+            sw.Start();
+
+            var selectFinderList = finderList.List
                 .Where(x =>
                     (strFilter.Length > 0 && x.Name.IndexOf(strFilter, StringComparison.OrdinalIgnoreCase) != -1)
                     || (strFilter.Length == 0)
-                )
-                .GroupBy(x => x.FileName)
-                .OrderBy(x => x.Key);
+                );
 
+            LogStopwatch("Фильтрация списка: ", sw);
 
-            // Создаем ноды
+            //
+            // Создаем древовидную структуру из тех элементов которые попали в отфильтрованный список
+            // 
 
-            var countAll = select.Count();
-            var count = 0;
+            UpdateStatusText("Создание дерева");
+            UpdateStatusPercent(33);
 
-            foreach (var functions in select)
+            sw.Start();
+
+            var root = new TreeItemModel("Конфигурация", null);
+            var currentNodeItem = root;
+            foreach (var selectFinderItem in selectFinderList)
             {
-                var newNodeGorup = treeViewNodes.Add(functions.Key);
-                foreach (var function in functions)
+                
+                // Добавляем родителей элемента
+
+                currentNodeItem = root;
+                foreach (var parentItem in selectFinderItem.Parents)
                 {
-                    var newNode = newNodeGorup.Nodes.Add(function.Name);
-                    newNode.Tag = function;
+                    var treeNodeItem = currentNodeItem.Children.FirstOrDefault(x => x.Name == parentItem);
+                    if (treeNodeItem != null)
+                    {
+                        currentNodeItem = treeNodeItem;
+                    }
+                    else
+                    {
+                        // Очередная ветвь дерева не найдена, создаем новую
+                        var newTreeNodeItem = new TreeItemModel(parentItem, null);
+                        currentNodeItem.Children.Add(newTreeNodeItem);
+                        currentNodeItem = newTreeNodeItem;
+                    }
                 }
-                count++;
-                UpdateStatusPercent((byte)((float)count/countAll*100));
+
+                // Добавляем элемент
+
+                if (selectFinderItem.Object is FunctionInfo)
+                {
+                    var func = selectFinderItem.Object as FunctionInfo;
+                    var newTreeNodeItem = new TreeItemModelMethod(
+                        selectFinderItem.Name, 
+                        selectFinderItem.Object,
+                        func.Type,
+                        func.Export);
+                }
+                else
+                {
+                    var newTreeNodeItem = new TreeItemModel(selectFinderItem.Name, selectFinderItem.Object);
+                }
+                
             }
+
+            LogStopwatch("Создание дерева: ", sw);
+
+            //
+            // Создаем ноды
+            // 
+
+            UpdateStatusText("Заполнение дерева");
+            UpdateStatusPercent(66);
+
+            sw.Start();
+
+            var rootTreeNode = treeViewNodes.Add(root.Name);
+            CreateTreeNodes(rootTreeNode, root);
+
             treeView1.EndUpdate();
             LogStopwatch("Заполнение дерева: ", sw);
+
+            UpdateStatusPercent(0);
+            UpdateStatusText("");
+        }
+
+        private void CreateTreeNodes(TreeNode currentTreeNode, TreeItemModel model)
+        {
+            foreach (var item in model.Children)
+            {
+                var newTreeNode = currentTreeNode.Nodes.Add(item.Name);
+                CreateTreeNodes(newTreeNode, item);
+            }
         }
 
         private void TbFind_TextChanged(object sender, EventArgs e)
-        {            
+        {
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -186,7 +298,7 @@ namespace FuncTreeFor1C
             {
                 ClearFields();
             }
-            
+
         }
 
         private void ClearFields()

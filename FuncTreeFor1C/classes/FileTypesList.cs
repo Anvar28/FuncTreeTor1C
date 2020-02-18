@@ -2,20 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace FuncTreeFor1C.classes
 {
-    /// <summary>
-    /// Список функций
-    /// </summary>
-    public class ListFunction
+    public class FileTypesList
     {
-        public List<FunctionInfo> List { get; set; } = new List<FunctionInfo>();
+        public List<FileType> List { get; set; } = new List<FileType>();
 
-        public FunctionInfo Add(FunctionInfo elem)
+        public FileType Add(FileType elem)
         {
             List.Add(elem);
             return elem;
+        }
+
+        public void AddRange(FileType[] elements)
+        {
+            List.AddRange(elements);
         }
 
         public int Count()
@@ -23,12 +26,12 @@ namespace FuncTreeFor1C.classes
             return List.Count();
         }
 
-        public IEnumerator<FunctionInfo> GetEnumerator()
+        public IEnumerator<FileType> GetEnumerator()
         {
             return List.GetEnumerator();
         }
 
-        public FunctionInfo this[int index]
+        public FileType this[int index]
         {
             get
             {
