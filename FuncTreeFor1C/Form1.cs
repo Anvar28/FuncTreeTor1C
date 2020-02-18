@@ -62,6 +62,11 @@ namespace FuncTreeFor1C
             }
         }
 
+        public void UpdateStatusTextAsync(string str)
+        {
+            this.BeginInvoke((MethodInvoker)(() => UpdateStatusText(str)));
+        }
+
         public void UpdateStatusPercent(byte percent)
         {
             if (percent > 100)
@@ -71,6 +76,10 @@ namespace FuncTreeFor1C
             {
                 progressBar.Value = percent;
             }
+        }
+        public void UpdateStatusPercentAsync(byte percent)
+        {
+            this.BeginInvoke((MethodInvoker)(() => UpdateStatusPercent(percent)));
         }
 
         private Stopwatch StopwatchStart()
@@ -88,16 +97,13 @@ namespace FuncTreeFor1C
                 // Поиск файлов
                 //
 
-                this.BeginInvoke((MethodInvoker)(() => UpdateStatusText(strFindFiles)));
+                UpdateStatusTextAsync(strFindFiles);
 
                 var sw = StopwatchStart();
 
                 var files = FileSearcher.Search(
                     path,
-                    (percent) =>
-                    {
-                        this.BeginInvoke((MethodInvoker)(() => UpdateStatusPercent(percent)));
-                    }
+                    (percent) => UpdateStatusPercentAsync(percent)
                 );
 
                 LogStopwatch("Сканирование файлов: ", sw);
@@ -106,7 +112,7 @@ namespace FuncTreeFor1C
                 // Парсинг
                 //
 
-                this.BeginInvoke((MethodInvoker)(() => UpdateStatusText(strParse)));
+                UpdateStatusTextAsync(strParse);
 
                 sw.Start();
 
@@ -114,10 +120,7 @@ namespace FuncTreeFor1C
 
                 listFiles = parserFile.ParseFiles(
                     files,
-                    (percent) =>
-                    {
-                        this.BeginInvoke((MethodInvoker)(() => UpdateStatusPercent(percent)));
-                    }
+                    (percent) => UpdateStatusPercentAsync(percent)
                 );
 
                 LogStopwatch("Парсинг файлов: ", sw);
@@ -125,6 +128,10 @@ namespace FuncTreeFor1C
                 //
                 // Создаем список поисковика, в него будем помещать все объекты по которым необходимо будет делать поиск
                 // 
+
+                sw.Start();
+
+                UpdateStatusTextAsync("Создание списка поисковика...");
 
                 var countAll = listFiles.Count();
                 var count = 0;
@@ -154,7 +161,7 @@ namespace FuncTreeFor1C
                     }
                     count++;
                     var percent = (byte)((float)count / countAll * 100);
-                    this.BeginInvoke((MethodInvoker)(() => UpdateStatusPercent(percent)));
+                    UpdateStatusPercentAsync(percent);
                 }
                 LogStopwatch("Создание списка поисковика: ", sw);
 
@@ -165,13 +172,13 @@ namespace FuncTreeFor1C
                 this.BeginInvoke((MethodInvoker)(() => FillTree()));
 
             })
-                .Start();
+            .Start();
         }
 
         public void FillTree(string strFilter = "")
         {
 
-            UpdateStatusText("Фильтрация");
+            UpdateStatusTextAsync("Фильтрация");
             UpdateStatusPercent(0);
 
             var sw = StopwatchStart();
@@ -190,8 +197,8 @@ namespace FuncTreeFor1C
             var selectFinderList = finderList.List
                 .Where(x =>
                     (strFilter.Length > 0 && x.Name.IndexOf(strFilter, StringComparison.OrdinalIgnoreCase) != -1)
-                    || (strFilter.Length == 0)
-                );
+                    || (strFilter.Length == 0))
+                .OrderBy(x => x.Name);
 
             LogStopwatch("Фильтрация списка: ", sw);
 
@@ -199,7 +206,7 @@ namespace FuncTreeFor1C
             // Создаем древовидную структуру из тех элементов которые попали в отфильтрованный список
             // 
 
-            UpdateStatusText("Создание дерева");
+            UpdateStatusTextAsync("Создание дерева");
             UpdateStatusPercent(33);
 
             sw.Start();
@@ -252,7 +259,7 @@ namespace FuncTreeFor1C
             // Создаем ноды
             // 
 
-            UpdateStatusText("Заполнение дерева");
+            UpdateStatusTextAsync("Заполнение дерева");
             UpdateStatusPercent(66);
 
             sw.Start();
