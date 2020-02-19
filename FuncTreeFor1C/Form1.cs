@@ -229,18 +229,18 @@ namespace FuncTreeFor1C
                     else
                     {
                         // Очередная ветвь дерева не найдена, создаем новую
-                        var newTreeNodeItem = new TreeItemModel(parentItem, null);
-                        currentNodeItem.Children.Add(newTreeNodeItem);
-                        currentNodeItem = newTreeNodeItem;
+                        var newTreeItem = new TreeItemModel(parentItem, null);
+                        currentNodeItem.Children.Add(newTreeItem);
+                        currentNodeItem = newTreeItem;
                     }
                 }
 
                 // Добавляем элемент
-
+                TreeItemModel newTreeNodeItem = null;
                 if (selectFinderItem.Object is FunctionInfo)
                 {
                     var func = selectFinderItem.Object as FunctionInfo;
-                    var newTreeNodeItem = new TreeItemModelMethod(
+                    newTreeNodeItem = new TreeItemModelMethod(
                         selectFinderItem.Name, 
                         selectFinderItem.Object,
                         func.Type,
@@ -248,9 +248,10 @@ namespace FuncTreeFor1C
                 }
                 else
                 {
-                    var newTreeNodeItem = new TreeItemModel(selectFinderItem.Name, selectFinderItem.Object);
+                    newTreeNodeItem = new TreeItemModel(selectFinderItem.Name, selectFinderItem.Object);
                 }
-                
+                currentNodeItem.Children.Add(newTreeNodeItem);
+
             }
 
             LogStopwatch("Создание дерева: ", sw);
