@@ -157,7 +157,11 @@ namespace FuncTreeFor1C
                     else
                     {
                         var newFinderItem = finderList.Add(file.Name, file);
-                        newFinderItem.Parents.AddRange(mParents);
+                        var c = mParents.Length - 1;
+                        for (int i = 0; i < c; i++)
+                        {
+                            newFinderItem.Parents.Add(mParents[i]);
+                        }                        
                     }
                     count++;
                     var percent = (byte)((float)count / countAll * 100);
