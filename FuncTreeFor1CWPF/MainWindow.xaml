@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FuncTreeFor1CWPF"
+        xmlns:local2="clr-namespace:FuncTreeFor1CWPF.classes"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded"
+        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" FontSize="14"
         >
     <Grid x:Name="mainGrid">
         <TabControl >
@@ -21,9 +22,21 @@
                     </Grid.ColumnDefinitions>
                     <DockPanel Grid.Row="0" Grid.Column="0" Margin="0,3" VerticalAlignment="Center">
                         <Label Width="auto" Content="Поиск"/>
-                        <TextBox Text=""/>
+                        <TextBox Name="tbxFilter" Text="" KeyUp="TbxFilter_KeyUp"/>
                     </DockPanel>
-                    <TreeView Grid.Row="1" Grid.Column="0"/>
+                    <TreeView Name="treeView" Grid.Row="1" Grid.Column="0" >
+                        <TreeView.Resources>
+                            <HierarchicalDataTemplate DataType="{x:Type local2:TreeItemModel}" ItemsSource="{Binding Children}" >
+                                <TextBlock Text="{Binding Name}"></TextBlock>
+                            </HierarchicalDataTemplate>
+                            <HierarchicalDataTemplate DataType="{x:Type local2:TreeItemModel_Method}" ItemsSource="{Binding Children}" >
+                                <StackPanel Orientation="Horizontal">
+                                    
+                                    <TextBlock Text="{Binding Name}"></TextBlock>
+                                </StackPanel>
+                            </HierarchicalDataTemplate>
+                        </TreeView.Resources>
+                    </TreeView>
                 </Grid>
             </TabItem>
             <TabItem Header="Настройки">
