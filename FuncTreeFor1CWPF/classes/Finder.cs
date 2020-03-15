@@ -15,7 +15,7 @@ namespace FuncTreeFor1CWPF.classes
         {
 
             if (filter.Trim().Length <= 2) 
-                return finderList.List.OrderBy(x => x.Name);
+                return finderList.OrderBy(x => x.Name);
 
             var method = false;
             var export = false;
@@ -44,7 +44,7 @@ namespace FuncTreeFor1CWPF.classes
             if (filterName.Length <= 1)
                 new Exception("Не верно задана строка фильтра. Заданы команды, но не задана строка поиска.");
 
-            return finderList.List
+            return finderList
                 .Where(x =>
                     (
                         (filter.Length == 0) 

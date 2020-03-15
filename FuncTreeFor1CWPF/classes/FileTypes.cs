@@ -20,7 +20,12 @@ namespace FuncTreeFor1CWPF.classes
     /// </summary>
     public class FileModule: FileType
     {
-        public FunctionList FunctionList = new FunctionList();
+        public FunctionList FunctionList { get; set; }
+
+        public FileModule()
+        {
+            FunctionList = new FunctionList(this);
+        }
     }
 
     /// <summary>

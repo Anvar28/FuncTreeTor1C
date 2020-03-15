@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,69 +9,15 @@ namespace FuncTreeFor1CWPF.classes
     /// <summary>
     /// Список функций
     /// </summary>
-    public class FunctionList
+    public class FunctionList : List<FunctionInfo>
     {
-        public List<FunctionInfo> List { get; set; } = new List<FunctionInfo>();
         public FileModule FileModule { get; }
-
-        public FunctionList(FileModule fileModule = null)
+        public FunctionList(FileModule fileModule)
         {
-            FileModule = FileModule;
+            FileModule = fileModule;
         }
-
-        /// <summary>
-        /// Добавление элемента в список
-        /// </summary>
-        /// <param name="elem"></param>
-        /// <returns></returns>
-        public FunctionInfo Add(FunctionInfo elem)
+        public FunctionList()
         {
-            List.Add(elem);
-            return elem;
-        }
-
-        /// <summary>
-        /// Добавление в список дргого списка
-        /// </summary>
-        /// <param name="addList"></param>
-        public void Add(FunctionList addList)
-        {
-            List.AddRange(addList.List);
-        }
-
-        /// <summary>
-        /// Количество
-        /// </summary>
-        /// <returns></returns>
-        public int Count()
-        {
-            return List.Count();
-        }
-
-        /// <summary>
-        /// реализация интерфейса IEnumerator
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerator<FunctionInfo> GetEnumerator()
-        {
-            return List.GetEnumerator();
-        }
-
-        /// <summary>
-        /// Реализация обращения по индексу через скобки
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        public FunctionInfo this[int index]
-        {
-            get
-            {
-                return List[index];
-            }
-            set
-            {
-                List[index] = value;
-            }
         }
     }
 }

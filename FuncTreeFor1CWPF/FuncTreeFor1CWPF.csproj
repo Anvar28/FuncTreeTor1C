@@ -65,9 +65,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="classes\FileQueue.cs" />
     <Compile Include="classes\FileSearcher.cs" />
     <Compile Include="classes\FileTypes.cs" />
-    <Compile Include="classes\FileTypesList.cs" />
+    <Compile Include="classes\FileTypesQueue.cs" />
     <Compile Include="classes\Finder.cs" />
     <Compile Include="classes\FinderItem.cs" />
     <Compile Include="classes\FinderList.cs" />

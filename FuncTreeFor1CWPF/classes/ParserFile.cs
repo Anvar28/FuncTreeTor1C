@@ -21,20 +21,10 @@ namespace FuncTreeFor1CWPF.classes
         /// <param name="files"></param>
         /// <param name="cutPathLength"></param>
         /// <returns></returns>
-        public FileTypesList ParseFiles(FileInfo[] files, UpdateStatus updateStatus)
+        public void ParseFiles(FileQueue files, FileTypesQueue _fileTypeQueue)
         {
-            var result = new FileTypesList();
-            var countAll = files.Count();
-            var count = 0;
-            object locker = new Object();
-
             Parallel.ForEach(files, (file) =>
             {
-                lock (locker)
-                {
-                    count++;
-                    updateStatus((byte)((float)count / countAll * 100));
-                }
 
                 FileType newFileType;
 
@@ -69,13 +59,8 @@ namespace FuncTreeFor1CWPF.classes
                 newFileType.Name = file.Name;
                 newFileType.FullName = file.FullName;
 
-                lock (result)
-                {
-                    result.Add(newFileType);
-                }
+                _fileTypeQueue.Enqueue(newFileType);
             });
-
-            return result;
         }
     }
 }

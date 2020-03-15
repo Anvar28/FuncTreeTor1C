@@ -11,22 +11,26 @@ namespace FuncTreeFor1CWPF.classes
     /// </summary>
     public class FileSearcher
     {
-        const string filterExt = "*.*";
 
         /// <summary>
-        /// Поиск файлов в выбранной папке (рекурсивно) и заполнение списка файлов с расширением bsl
+        /// Поиск файлов в выбранной папке (рекурсивно) и заполнение списка файлов 
         /// </summary>
         /// <param name="path"></param>
-        /// <returns></returns>
-        public static FileInfo[] Search(string path, UpdateStatus updateStatus = null)
+        public static void Search(FileQueue fileQueue, string path)
         {
-            var fileList = new List<FileInfo>();
-            DirectoryInfo DI = new DirectoryInfo(path);
-            fileList.AddRange(DI.GetFiles(filterExt, SearchOption.AllDirectories));
+            string[] files = Directory.GetFiles(path);
+            string[] directories = Directory.GetDirectories(path);
 
-            updateStatus(100);
+            foreach (var file in files)
+            {
+                fileQueue.Enqueue(new FileInfo(file));
+            }
 
-            return fileList.ToArray();
+            foreach (var dir in directories)
+            {
+                Search(fileQueue, dir);
+            }
         }
+
     }
 }

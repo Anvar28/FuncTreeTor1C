@@ -1,5 +1,6 @@
 ﻿using FuncTreeFor1CWPF.classes;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -8,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace FuncTreeFor1CWPF
 {
@@ -60,6 +62,14 @@ namespace FuncTreeFor1CWPF
 
         public FinderList _finderList;
 
+        private bool _flagFileQueueIsEnd;
+
+        private FileQueue _fileQueue;
+
+        private bool _flagFunctionQueueIsEnd;
+
+        private FileTypesQueue _fileTypeQueue;
+
         #endregion
 
         #region FunctionPublic
@@ -69,15 +79,60 @@ namespace FuncTreeFor1CWPF
             if (_pathToSrc.Length == 0)
                 return;
 
-            // Ищем все файлы
-            var files = FileSearcher.Search(_pathToSrc, UpdateStatusPercentAsync);
+            _fileQueue = new FileQueue();
 
-            // Парсим файлы
-            var parserFile = new ParserFile();
-            var funcList = parserFile.ParseFiles(files, UpdateStatusPercentAsync);
+            //
+            // Ищем все файлы в потоке
+            //
+
+            new Task(() => {
+                _flagFileQueueIsEnd = false;
+                FileSearcher.Search(_fileQueue, _pathToSrc);
+                _flagFileQueueIsEnd = true;
+            }).Start();
+
+            //
+            // Парсим файлы в несколько потоков
+            //
+
+            _fileTypeQueue = new FileTypesQueue();
+
+            new Task(() =>
+            {
+                _flagFunctionQueueIsEnd = false;
+
+                Task.Delay(200);
+
+                // Если задание по поиску файлов еще работает, то будем парсить файлы
+                while (!_flagFileQueueIsEnd)
+                {
+                    // Запускаем перебор файлов и парсинг в несколько потоков
+                    var parserFile = new ParserFile();
+                    parserFile.ParseFiles(_fileQueue, _fileTypeQueue);
+                }
+
+                _flagFunctionQueueIsEnd = true;
+
+            }).Start();
 
             // Заполняем список для поиска, результатами парсинга
-            _finderList = new FinderList(funcList, _pathToSrc.Length, UpdateStatusPercentAsync);
+
+            _finderList = new FinderList();
+
+            new Task(() =>
+            {
+                Task.Delay(200);
+                // Если парсинг файлов еще не закончен, то будет продолжать заполнять
+                // список поиска
+                while (!_flagFunctionQueueIsEnd)
+                {
+                    Task.Delay(5);
+                    foreach (var fileType in _fileTypeQueue)
+                    {
+                        _finderList.AddFromFileTypes(fileType, _pathToSrc.Length);
+                    }
+                }
+            }).Start();
 
         }
 
@@ -98,6 +153,10 @@ namespace FuncTreeFor1CWPF
         #endregion
 
         #region FunctionPrivate
+
+        private void ParseFiles()
+        {
+        }
 
         #endregion
     }
