@@ -23,13 +23,14 @@
                     <DockPanel Grid.Row="0" Grid.Column="0" Margin="0,3" VerticalAlignment="Center">
                         <Label Width="auto" Content="Поиск"/>
                         <TextBox Name="tbxFilter" Text="" KeyUp="TbxFilter_KeyUp"/>
+                        <Button Width="auto" Click="Button_Click" >test</Button>
                     </DockPanel>
                     <TreeView Name="treeView" Grid.Row="1" Grid.Column="0" >
                         <TreeView.Resources>
-                            <HierarchicalDataTemplate DataType="{x:Type local2:TreeItemModel}" ItemsSource="{Binding Children}" >
+                            <HierarchicalDataTemplate DataType="{x:Type local2:TreeNode}" ItemsSource="{Binding Nodes}" >
                                 <TextBlock Text="{Binding Name}"></TextBlock>
                             </HierarchicalDataTemplate>
-                            <HierarchicalDataTemplate DataType="{x:Type local2:TreeItemModel_Method}" ItemsSource="{Binding Children}" >
+                            <HierarchicalDataTemplate DataType="{x:Type local2:TreeNode_Method}" ItemsSource="{Binding Nodes}" >
                                 <StackPanel Orientation="Horizontal">
                                     
                                     <TextBlock Text="{Binding Name}"></TextBlock>

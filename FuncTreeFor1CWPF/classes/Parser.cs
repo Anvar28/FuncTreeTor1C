@@ -70,6 +70,7 @@ namespace FuncTreeFor1CWPF.classes
                 }
                 index++;
             }
+            result.Sort((x, y) => string.Compare(x.Name, y.Name));
             return result;
         }
 

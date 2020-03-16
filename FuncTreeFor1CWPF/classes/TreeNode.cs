@@ -8,25 +8,25 @@ using System.Threading.Tasks;
 namespace FuncTreeFor1CWPF.classes
 {
 
-    public class TreeItemModel
+    public class TreeNode
     {
         #region Properties
 
         public string Name { get; set; }
 
-        private TreeModel children;
+        private TreeNodes _nodes;
 
         public object Obj { get; set; }
 
-        public TreeModel Children
+        public TreeNodes Nodes
         {
             get
             {
-                if (children == null)
+                if (_nodes == null)
                 {
-                    children = new TreeModel();
+                    _nodes = new TreeNodes();
                 }                    
-                return children;
+                return _nodes;
             }
         }
 
@@ -34,7 +34,7 @@ namespace FuncTreeFor1CWPF.classes
 
         #region Constructor
 
-        public TreeItemModel(string name, object obj)
+        public TreeNode(string name, object obj)
         {
             Name = name;
             Obj = obj;
@@ -43,7 +43,7 @@ namespace FuncTreeFor1CWPF.classes
         #endregion
     }
 
-    public class TreeItemModel_Method : TreeItemModel
+    public class TreeNode_Method : TreeNode
     {
         #region Properties
 
@@ -51,14 +51,14 @@ namespace FuncTreeFor1CWPF.classes
 
         public TypeFunction Type { get; set; }
 
-        public TreeItemModel_Method(string name, object obj, TypeFunction type, bool export = false)
+        public TreeNode_Method(string name, object obj, TypeFunction type, bool export = false)
             : base(name, obj)
         {
             Type = type;
             Export = export;
         }
 
-        public TreeItemModel_Method(string name, object obj, bool export = false)
+        public TreeNode_Method(string name, object obj, bool export = false)
             : base(name, obj)
         {
             Export = export;

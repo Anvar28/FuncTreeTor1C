@@ -30,8 +30,9 @@ namespace FuncTreeFor1CWPF
         public MyApp()
         {
             _loger = new LogerFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "log.txt"));
-            _treeItem = new TreeModel();
+            _treeItem = new Tree();
             _finderList = new FinderList();
+            _treeItem = new Tree();
         }
 
         #endregion
@@ -54,8 +55,8 @@ namespace FuncTreeFor1CWPF
             }
         }
 
-        private TreeModel _treeItem;
-        public TreeModel TreeItem
+        private Tree _treeItem;
+        public Tree Tree
         {
             get { return _treeItem; }
         }
@@ -85,7 +86,8 @@ namespace FuncTreeFor1CWPF
             // Ищем все файлы в потоке
             //
 
-            new Task(() => {
+            new Task(() =>
+            {
                 _flagFileQueueIsEnd = false;
                 FileSearcher.Search(_fileQueue, _pathToSrc);
                 _flagFileQueueIsEnd = true;
@@ -101,15 +103,27 @@ namespace FuncTreeFor1CWPF
             {
                 _flagFunctionQueueIsEnd = false;
 
-                Task.Delay(200);
-
                 // Если задание по поиску файлов еще работает, то будем парсить файлы
-                while (!_flagFileQueueIsEnd)
+                do
                 {
-                    // Запускаем перебор файлов и парсинг в несколько потоков
-                    var parserFile = new ParserFile();
-                    parserFile.ParseFiles(_fileQueue, _fileTypeQueue);
-                }
+                    if (_fileQueue.Count() > 0)
+                    {
+                        FileInfo fileInfo;
+                        _fileQueue.TryDequeue(out fileInfo);
+                        if (fileInfo != null)
+                        {
+                            // Получаем новый тип файла, если это файл модуля, то он
+                            // будет уже со списком отпарсенных функций
+                            var fileType = FileTypeFabric.NewFileType(fileInfo);
+                            _fileTypeQueue.Enqueue(fileType);
+                        }
+                    }
+                    else
+                    {
+                        Task.Delay(50);
+                    }
+
+                } while (!_flagFileQueueIsEnd || _fileQueue.Count() > 0);
 
                 _flagFunctionQueueIsEnd = true;
 
@@ -124,14 +138,27 @@ namespace FuncTreeFor1CWPF
                 Task.Delay(200);
                 // Если парсинг файлов еще не закончен, то будет продолжать заполнять
                 // список поиска
-                while (!_flagFunctionQueueIsEnd)
+                do
                 {
-                    Task.Delay(5);
-                    foreach (var fileType in _fileTypeQueue)
+                    if (_fileTypeQueue.Count() > 0)
                     {
-                        _finderList.AddFromFileTypes(fileType, _pathToSrc.Length);
+                        FileType fileType;
+                        _fileTypeQueue.TryDequeue(out fileType);
+                        if (fileType != null) { 
+                            var addedItems = _finderList.AddFromFileTypes(fileType, _pathToSrc.Length);
+                            foreach (var item in addedItems)
+                            {
+                                _treeItem.Add(item);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Task.Delay(50);
                     }
                 }
+                while (!_flagFunctionQueueIsEnd || _fileTypeQueue.Count() > 0);
+
             }).Start();
 
         }
@@ -142,7 +169,7 @@ namespace FuncTreeFor1CWPF
             var selectFinderList = Finder.Find(_finderList, filter);
 
             // Заполняем дерево
-            _treeItem = new TreeModel(selectFinderList);
+            _treeItem.Fill(selectFinderList);
         }
 
         public void UpdateStatusPercentAsync(byte percent)

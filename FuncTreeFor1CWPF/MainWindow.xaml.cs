@@ -28,7 +28,7 @@ namespace FuncTreeFor1CWPF
             InitializeComponent();
             this.DataContext = myApp;
             tbxPathToSrc.DataContext = myApp;
-            treeView.ItemsSource = myApp.TreeItem;
+            treeView.ItemsSource = myApp.Tree.Nodes;
         }
 
         #region Events
@@ -42,6 +42,7 @@ namespace FuncTreeFor1CWPF
         private void BtnSelectPath_Click(object sender, RoutedEventArgs e)
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog();
+            fbd.SelectedPath = myApp.PathToSrc;
             if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 myApp.PathToSrc = fbd.SelectedPath;
@@ -67,10 +68,16 @@ namespace FuncTreeFor1CWPF
         {
             treeView.ItemsSource = null;
             myApp.FillTreeItem(tbxFilter.Text);
-            treeView.ItemsSource = myApp.TreeItem;
+            treeView.ItemsSource = myApp.Tree.Nodes;
         }
 
         #endregion
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            treeView.ItemsSource = null;
+            myApp.Tree.Add(new classes.FinderItem("test", null));
+            treeView.ItemsSource = myApp.Tree.Nodes;
+        }
     }
 }

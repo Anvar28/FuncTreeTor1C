@@ -10,9 +10,9 @@ namespace FuncTreeFor1CWPF.classes
     {
         char[] separetor = new char[] { '\\' };
 
-        public void AddFromFileTypes(FileType fileType, int countCutFullPath)
+        public List<FinderItem> AddFromFileTypes(FileType fileType, int countCutFullPath)
         {
-
+            var result = new List<FinderItem>();
             var mParents = fileType.FullName.Substring(countCutFullPath).Split(separetor);
 
             if (fileType is FileModule)
@@ -23,6 +23,7 @@ namespace FuncTreeFor1CWPF.classes
                     var newFinderItem = Add(item.Name, item);
                     newFinderItem.Parents.AddRange(mParents);
                     newFinderItem.Export = item.Export;
+                    result.Add(newFinderItem);
                 }
             }
             else
@@ -32,8 +33,11 @@ namespace FuncTreeFor1CWPF.classes
                 for (int i = 0; i < c; i++)
                 {
                     newFinderItem.Parents.Add(mParents[i]);
+                    result.Add(newFinderItem);
                 }
             }
+
+            return result;
         }
 
         /// <summary>
@@ -42,7 +46,9 @@ namespace FuncTreeFor1CWPF.classes
         public FinderItem Add(string Name, object obj)
         {
             var newItem = new FinderItem(Name, obj);
-            this.Add(newItem);
+            lock (this) {
+                this.Add(newItem);
+            }            
             return newItem;
         }
     }

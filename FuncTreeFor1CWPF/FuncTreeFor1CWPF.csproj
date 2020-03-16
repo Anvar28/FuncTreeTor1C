@@ -77,9 +77,10 @@
     <Compile Include="classes\global.cs" />
     <Compile Include="classes\Loger.cs" />
     <Compile Include="classes\Parser.cs" />
-    <Compile Include="classes\ParserFile.cs" />
-    <Compile Include="classes\TreeItemModel.cs" />
-    <Compile Include="classes\TreeModel.cs" />
+    <Compile Include="classes\FileTypeFabric.cs" />
+    <Compile Include="classes\TreeNode.cs" />
+    <Compile Include="classes\TreeNodes.cs" />
+    <Compile Include="classes\Tree.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
