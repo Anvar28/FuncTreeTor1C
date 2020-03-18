@@ -13,31 +13,50 @@
             <TabItem Header="Конфигурация">
                 <Grid Background="#FFE5E5E5">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
                         <RowDefinition Height="30"/>
-                        <RowDefinition Height="262*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="145*"/>
-                        <ColumnDefinition Width="246*"/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <DockPanel Grid.Row="0" Grid.Column="0" Margin="0,3" VerticalAlignment="Center">
-                        <Label Width="auto" Content="Поиск"/>
-                        <TextBox Name="tbxFilter" Text="" KeyUp="TbxFilter_KeyUp"/>
-                        <Button Width="auto" Click="Button_Click" >test</Button>
-                    </DockPanel>
-                    <TreeView Name="treeView" Grid.Row="1" Grid.Column="0" >
-                        <TreeView.Resources>
-                            <HierarchicalDataTemplate DataType="{x:Type local2:TreeNode}" ItemsSource="{Binding Nodes}" >
-                                <TextBlock Text="{Binding Name}"></TextBlock>
-                            </HierarchicalDataTemplate>
-                            <HierarchicalDataTemplate DataType="{x:Type local2:TreeNode_Method}" ItemsSource="{Binding Nodes}" >
-                                <StackPanel Orientation="Horizontal">
-                                    
+                    <DockPanel Margin="0,3" VerticalAlignment="Stretch" LastChildFill="True">
+                        <DockPanel DockPanel.Dock="Top" VerticalAlignment="Top" Height="auto" Margin="0, 0, 0, 5">
+                            <Label DockPanel.Dock="Left" Content="Поиск"/>
+                            <Button x:Name="btnClearFilter" DockPanel.Dock="Right" Content=" X " VerticalAlignment="Center" Width="auto" Click="BtnClearFilter_Click"/>
+                            <TextBox Name="tbxFilter" Text="" KeyUp="TbxFilter_KeyUp"/>
+                        </DockPanel>
+                        <TreeView Name="treeView" SelectedItemChanged="TreeView_SelectedItemChanged" MouseDoubleClick="TreeView_MouseDoubleClick">
+                            <TreeView.Resources>
+                                <HierarchicalDataTemplate DataType="{x:Type local2:TreeNode}" ItemsSource="{Binding Nodes}" >
                                     <TextBlock Text="{Binding Name}"></TextBlock>
-                                </StackPanel>
-                            </HierarchicalDataTemplate>
-                        </TreeView.Resources>
-                    </TreeView>
+                                </HierarchicalDataTemplate>
+                                <HierarchicalDataTemplate DataType="{x:Type local2:TreeNode_Method}" ItemsSource="{Binding Nodes}" >
+                                    <StackPanel Orientation="Horizontal">
+
+                                        <TextBlock Text="{Binding Name}"></TextBlock>
+                                    </StackPanel>
+                                </HierarchicalDataTemplate>
+                            </TreeView.Resources>
+                        </TreeView>
+                    </DockPanel>
+                    <GridSplitter HorizontalAlignment="Left" Grid.Column="1" VerticalAlignment="Stretch" Width="5" Background="#FFE9F5FF"/>
+                    <Grid x:Name="pnlRight" Grid.Column="2" Margin="0,3,3,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                        <Grid x:Name="pnlForModule" Margin="0" Visibility="Hidden" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="80"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBox Grid.Row="0" x:Name="tbxComments"/>
+                            <GridSplitter HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Top" Height="5" Background="#FFE9F5FF"/>
+                            <TextBox Grid.Row="2" x:Name="tbxDescript"/>
+                        </Grid>
+                        <DockPanel x:Name="pnlForOther" Visibility="Hidden" Margin="0">
+                            <TextBox x:Name="tbxDescript1" />
+                        </DockPanel>
+                    </Grid>
                 </Grid>
             </TabItem>
             <TabItem Header="Настройки">

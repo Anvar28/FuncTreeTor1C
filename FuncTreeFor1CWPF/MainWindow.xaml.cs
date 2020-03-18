@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FuncTreeFor1CWPF.classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,9 +35,10 @@ namespace FuncTreeFor1CWPF
         #region Events
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            HideAllObjectPanel();
             myApp.PathToSrc = @"d:\projects\C-sharp\FuncTreeFor1C\Тестовая конфа\";
-            myApp.FillFinderList();
-            FillTreeNode();
+            myApp.ScanFolderAndFill();
+            FilterTreeNode();
         }
 
         private void BtnSelectPath_Click(object sender, RoutedEventArgs e)
@@ -46,38 +48,106 @@ namespace FuncTreeFor1CWPF
             if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 myApp.PathToSrc = fbd.SelectedPath;
-                myApp.FillFinderList();
-                FillTreeNode();
+                myApp.ScanFolderAndFill();
+                FilterTreeNode();
             }
         }
         private void TbxFilter_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                if (tbxFilter.Text.Length > 2)
-                {
-                    FillTreeNode();
-                }
+                FilterTreeNode();
+                ExpandTreeRoot();
             }
+        }
+        private void BtnClearFilter_Click(object sender, RoutedEventArgs e)
+        {
+            myApp.FillTreeItem();
+        }
+        private void TreeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var selectNode = ((System.Windows.Controls.TreeView)e.Source).SelectedValue;
+            if (!(selectNode is FuncTreeFor1CWPF.classes.TreeNode))
+            {
+                return;
+            }
+
+            var obj = ((FuncTreeFor1CWPF.classes.TreeNode)selectNode).Obj;
+            FrameworkElement pnl = null;
+            if (obj is FileModule)
+            {
+                pnl = pnlForOther;
+            }
+            else if (obj is FunctionInfo)
+            {
+                pnl = pnlForModule;
+            }
+            else if (obj is FileForm)
+            {
+                pnl = pnlForOther;
+            }
+            else if (obj is FileMdo)
+            {
+                pnl = pnlForOther;
+            }
+            else if (obj is FilePicture)
+            {
+                pnl = pnlForOther;
+            }
+            else if (obj is FileMXLX)
+            {
+                pnl = pnlForOther;
+            }
+            else if (obj is FileHTML)
+            {
+                pnl = pnlForOther;
+            }
+            else if (obj is FileOther)
+            {
+                pnl = pnlForOther;
+            }
+
+            HideAllObjectPanel();
+
+            if (pnl != null)
+            {
+                pnl.Visibility = Visibility.Visible;
+                pnlForOther.DataContext = obj;
+            }
+        }
+        private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+
         }
         #endregion
 
         #region Func
 
-        public void FillTreeNode()
+        public void FilterTreeNode()
         {
-            treeView.ItemsSource = null;
             myApp.FillTreeItem(tbxFilter.Text);
-            treeView.ItemsSource = myApp.Tree.Nodes;
         }
 
+        private void ExpandTreeRoot()
+        {
+            treeView.Focus();
+            var treeItem = treeView.ItemContainerGenerator.ContainerFromItem(myApp.Tree.Root) as TreeViewItem;
+            if (treeItem != null)
+            {
+                treeItem.IsSelected = true;
+                treeItem.IsExpanded = true;
+            }
+        }
+
+        public void HideAllObjectPanel()
+        {
+            foreach (var item in pnlRight.Children)
+            {
+                ((UIElement)item).Visibility = Visibility.Hidden;
+            }
+        }
         #endregion
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            treeView.ItemsSource = null;
-            myApp.Tree.Add(new classes.FinderItem("test", null));
-            treeView.ItemsSource = myApp.Tree.Nodes;
-        }
+
     }
 }

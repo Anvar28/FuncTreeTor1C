@@ -25,7 +25,7 @@ namespace FuncTreeFor1CWPF.classes
 
             foreach (var item in mFilters)
             {
-                if (item.Length == 0)
+                if (item.Length == 1)
                 {
                     var command = item[0];
 
@@ -44,20 +44,22 @@ namespace FuncTreeFor1CWPF.classes
             if (filterName.Length <= 1)
                 new Exception("Не верно задана строка фильтра. Заданы команды, но не задана строка поиска.");
 
-            return finderList
+            var result = finderList
                 .Where(x =>
                     (
-                        (filter.Length == 0) 
-                        || (filter.Length > 0 && x.Name.IndexOf(filter, StringComparison.OrdinalIgnoreCase) != -1)
+                        (filterName.Length == 0) 
+                        || (filterName.Length > 0 && x.Name.IndexOf(filterName, StringComparison.OrdinalIgnoreCase) != -1)
                     )
                     && (
-                        export && x.Export
+                        export ? x.Export : true
                     )
                     && (
-                        method && x.Object is FunctionInfo
+                        method ? x.Object is FunctionInfo : true
                     )
                 )
                 .OrderBy(x => x.Name);
+
+            return result;
         }
     }
 }

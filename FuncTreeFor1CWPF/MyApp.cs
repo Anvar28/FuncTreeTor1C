@@ -32,7 +32,6 @@ namespace FuncTreeFor1CWPF
             _loger = new LogerFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "log.txt"));
             _treeItem = new Tree();
             _finderList = new FinderList();
-            _treeItem = new Tree();
         }
 
         #endregion
@@ -71,96 +70,30 @@ namespace FuncTreeFor1CWPF
 
         private FileTypesQueue _fileTypeQueue;
 
+        public bool OnlyMethods { get; set; } 
         #endregion
 
         #region FunctionPublic
 
-        public void FillFinderList()
+        public void ScanFolderAndFill()
         {
             if (_pathToSrc.Length == 0)
                 return;
 
-            _fileQueue = new FileQueue();
-
-            //
             // Ищем все файлы в потоке
-            //
+            _fileQueue = new FileQueue();
+            new Task(FindFiles).Start();
 
-            new Task(() =>
-            {
-                _flagFileQueueIsEnd = false;
-                FileSearcher.Search(_fileQueue, _pathToSrc);
-                _flagFileQueueIsEnd = true;
-            }).Start();
-
-            //
             // Парсим файлы в несколько потоков
-            //
-
             _fileTypeQueue = new FileTypesQueue();
-
-            new Task(() =>
-            {
-                _flagFunctionQueueIsEnd = false;
-
-                // Если задание по поиску файлов еще работает, то будем парсить файлы
-                do
-                {
-                    if (_fileQueue.Count() > 0)
-                    {
-                        FileInfo fileInfo;
-                        _fileQueue.TryDequeue(out fileInfo);
-                        if (fileInfo != null)
-                        {
-                            // Получаем новый тип файла, если это файл модуля, то он
-                            // будет уже со списком отпарсенных функций
-                            var fileType = FileTypeFabric.NewFileType(fileInfo);
-                            _fileTypeQueue.Enqueue(fileType);
-                        }
-                    }
-                    else
-                    {
-                        Task.Delay(50);
-                    }
-
-                } while (!_flagFileQueueIsEnd || _fileQueue.Count() > 0);
-
-                _flagFunctionQueueIsEnd = true;
-
-            }).Start();
+            new Task(ParseFiles).Start();
+            new Task(ParseFiles).Start();
+            new Task(ParseFiles).Start();
+            new Task(ParseFiles).Start();
 
             // Заполняем список для поиска, результатами парсинга
-
             _finderList = new FinderList();
-
-            new Task(() =>
-            {
-                Task.Delay(200);
-                // Если парсинг файлов еще не закончен, то будет продолжать заполнять
-                // список поиска
-                do
-                {
-                    if (_fileTypeQueue.Count() > 0)
-                    {
-                        FileType fileType;
-                        _fileTypeQueue.TryDequeue(out fileType);
-                        if (fileType != null) { 
-                            var addedItems = _finderList.AddFromFileTypes(fileType, _pathToSrc.Length);
-                            foreach (var item in addedItems)
-                            {
-                                _treeItem.Add(item);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Task.Delay(50);
-                    }
-                }
-                while (!_flagFunctionQueueIsEnd || _fileTypeQueue.Count() > 0);
-
-            }).Start();
-
+            new Task(FillFinderList).Start();
         }
 
         public void FillTreeItem(string filter = "")
@@ -183,8 +116,75 @@ namespace FuncTreeFor1CWPF
 
         private void ParseFiles()
         {
+            _flagFunctionQueueIsEnd = false;
+
+            // Если задание по поиску файлов еще работает, то будем парсить файлы
+            while (true)
+            {
+                if (_flagFileQueueIsEnd && _fileQueue.Count() == 0)
+                {
+                    break;
+                }
+
+                if (_fileQueue.Count() > 0)
+                {
+                    FileInfo fileInfo;
+                    _fileQueue.TryDequeue(out fileInfo);
+                    if (fileInfo != null)
+                    {
+                        // Получаем новый тип файла, если это файл модуля, то он
+                        // будет уже со списком отпарсенных функций
+                        var fileType = FileTypeFabric.NewFileType(fileInfo);
+                        _fileTypeQueue.Enqueue(fileType);
+                    }
+                }
+                else
+                {
+                    Task.Delay(50);
+                }
+            }
+
+            _flagFunctionQueueIsEnd = true;
         }
 
+        private void FindFiles()
+        {
+            _flagFileQueueIsEnd = false;
+            FileSearcher.Search(_fileQueue, _pathToSrc);
+            _flagFileQueueIsEnd = true;
+        }
+
+        private void FillFinderList()
+        {
+            // Если парсинг файлов еще не закончен, то будет продолжать заполнять
+            // список поиска
+            while (true)
+            {
+                if (_flagFunctionQueueIsEnd && _fileTypeQueue.Count() == 0)
+                {
+                    break;
+                }
+                if (_fileTypeQueue.Count() > 0)
+                {
+                    FileType fileType;
+                    _fileTypeQueue.TryDequeue(out fileType);
+                    if (fileType != null)
+                    {
+                        var addedItems = _finderList.AddFromFileTypes(fileType, _pathToSrc.Length);
+                        
+                        // сразу добавляем только что добавленные объекты в дерево
+                        foreach (var item in addedItems)
+                        {
+                            _treeItem.Add(item);
+                        }
+                    }
+                }
+                else
+                {
+                    Task.Delay(50);
+                }
+            }
+        }
         #endregion
     }
 }

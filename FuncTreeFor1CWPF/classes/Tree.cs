@@ -27,8 +27,13 @@ namespace FuncTreeFor1CWPF.classes
             var currentNodeItem = Root;
             foreach (var parentItem in finderItem.Parents)
             {
-                var tmp = currentNodeItem.Nodes.ToArray();
-                var treeNodeItem = tmp.FirstOrDefault(x => x.Name == parentItem);
+                TreeNode treeNodeItem;
+                //var tmp = currentNodeItem.Nodes.ToArray();
+                lock (currentNodeItem.Nodes)
+                {
+                    var tmp = currentNodeItem.Nodes;
+                    treeNodeItem = tmp.FirstOrDefault(x => x.Name == parentItem);
+                }
                 if (treeNodeItem != null)
                 {
                     currentNodeItem = treeNodeItem;
@@ -70,11 +75,16 @@ namespace FuncTreeFor1CWPF.classes
 
         public void Fill(IOrderedEnumerable<FinderItem> selectFinderList)
         {
-            Root.Nodes.Clear();
+            Clear();
             foreach (var selectFinderItem in selectFinderList)
             {
                 Add(selectFinderItem);
             }
+        }
+
+        public void Clear()
+        {
+            Root.Nodes.Clear();
         }
     }
 }

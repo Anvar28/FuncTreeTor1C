@@ -33,8 +33,8 @@ namespace FuncTreeFor1CWPF.classes
                 for (int i = 0; i < c; i++)
                 {
                     newFinderItem.Parents.Add(mParents[i]);
-                    result.Add(newFinderItem);
                 }
+                result.Add(newFinderItem);
             }
 
             return result;
