@@ -28,12 +28,12 @@ namespace FuncTreeFor1CWPF.classes
             foreach (var parentItem in finderItem.Parents)
             {
                 TreeNode treeNodeItem;
-                //var tmp = currentNodeItem.Nodes.ToArray();
-                lock (currentNodeItem.Nodes)
-                {
-                    var tmp = currentNodeItem.Nodes;
-                    treeNodeItem = tmp.FirstOrDefault(x => x.Name == parentItem);
-                }
+                treeNodeItem = currentNodeItem.Nodes.FirstOrDefault(x => x.Name == parentItem);
+                //lock (currentNodeItem.Nodes)
+                //{
+                //    var tmp = currentNodeItem.Nodes;
+                //    treeNodeItem = tmp.FirstOrDefault(x => x.Name == parentItem);
+                //}
                 if (treeNodeItem != null)
                 {
                     currentNodeItem = treeNodeItem;

@@ -73,7 +73,9 @@ namespace FuncTreeFor1CWPF
             }
 
             var obj = ((FuncTreeFor1CWPF.classes.TreeNode)selectNode).Obj;
+            FuncTreeFor1CWPF.classes.ViewBase viewObj = null;
             FrameworkElement pnl = null;
+
             if (obj is FileModule)
             {
                 pnl = pnlForOther;
@@ -81,6 +83,7 @@ namespace FuncTreeFor1CWPF
             else if (obj is FunctionInfo)
             {
                 pnl = pnlForModule;
+                viewObj = new ViewFunction((FunctionInfo)obj);
             }
             else if (obj is FileForm)
             {
@@ -89,6 +92,7 @@ namespace FuncTreeFor1CWPF
             else if (obj is FileMdo)
             {
                 pnl = pnlForOther;
+                viewObj = new ViewOtherFile(((FileMdo)obj).FullName);                
             }
             else if (obj is FilePicture)
             {
@@ -112,7 +116,44 @@ namespace FuncTreeFor1CWPF
             if (pnl != null)
             {
                 pnl.Visibility = Visibility.Visible;
-                pnlForOther.DataContext = obj;
+                if (viewObj != null)
+                {
+                    if (viewObj is ViewOtherFile)
+                    {
+                        var viewOtherFile = viewObj as ViewOtherFile;
+                        rtb.Document.Blocks.Clear();
+
+                        Paragraph paragraph = new Paragraph();
+
+                        foreach (var str in viewOtherFile.Text)
+                        {
+                            paragraph.Inlines.Add(str + "\r\n");
+                        }
+
+                        rtb.Document.Blocks.Add(paragraph);
+
+                    } else if (viewObj is ViewFunction) {
+
+                        var viewOtherFile = viewObj as ViewFunction;
+
+                        tbxComments.Document.Blocks.Clear();
+                        Paragraph paragraph = new Paragraph();
+                        foreach (var str in viewOtherFile.Descript)
+                        {
+                            paragraph.Inlines.Add(str + "\r\n");
+                        }
+                        tbxComments.Document.Blocks.Add(paragraph);
+
+                        tbxDescript.Document.Blocks.Clear();
+                        paragraph = new Paragraph();
+                        foreach (var str in viewOtherFile.Text)
+                        {
+                            paragraph.Inlines.Add(str + "\r\n");
+                        }
+                        tbxDescript.Document.Blocks.Add(paragraph);
+
+                    }
+                }
             }
         }
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

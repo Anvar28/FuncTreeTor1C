@@ -81,6 +81,8 @@
     <Compile Include="classes\TreeNode.cs" />
     <Compile Include="classes\TreeNodes.cs" />
     <Compile Include="classes\Tree.cs" />
+    <Compile Include="classes\ViewFunction.cs" />
+    <Compile Include="classes\ViewOtherFile.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

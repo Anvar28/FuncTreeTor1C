@@ -62,7 +62,7 @@ namespace FuncTreeFor1CWPF.classes
 
                     var newFunction = new FunctionInfo(result);
                     newFunction.Name = str.Substring(indexStartName, firstBracket - indexStartName).Trim();
-                    newFunction.Descript = GetDescriptFunction(text, index);
+                    newFunction.IndexStartDescript = GetStartDescriptFunction(text, index);
                     newFunction.Type = typeFunc;
                     newFunction.IndexStart = indexStartName;
                     newFunction.Export = export;
@@ -71,6 +71,40 @@ namespace FuncTreeFor1CWPF.classes
                 index++;
             }
             result.Sort((x, y) => string.Compare(x.Name, y.Name));
+            return result;
+        }
+
+        /// <summary>
+        /// Возвращает номер строки начала коментария который описывает функцию, 
+        /// это все комментарии которые находятся выше объявления функции
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="indexEnd"></param>
+        /// <returns></returns>
+        private static int GetStartDescriptFunction(string[] text, int indexEnd)
+        {
+            var indStart = indexEnd;
+            while (indStart > 0)
+            {
+                indStart--;
+                var strDesc = text[indStart].Trim();
+                if (!ItsComment(strDesc))
+                {
+                    break;
+                }
+            }
+
+            return indStart;
+        }
+
+        private static bool ItsComment(string str)
+        {
+            var result = false;
+            var tmpStr = str.Trim();
+            if ((tmpStr.Length > 2) && tmpStr.Substring(0, 2) == "//")
+            {
+                result = true;
+            }
             return result;
         }
 

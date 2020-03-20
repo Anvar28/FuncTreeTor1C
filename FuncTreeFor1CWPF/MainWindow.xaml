@@ -21,7 +21,7 @@
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <DockPanel Margin="0,3" VerticalAlignment="Stretch" LastChildFill="True">
+                    <DockPanel Margin="0" VerticalAlignment="Stretch" LastChildFill="True">
                         <DockPanel DockPanel.Dock="Top" VerticalAlignment="Top" Height="auto" Margin="0, 0, 0, 5">
                             <Label DockPanel.Dock="Left" Content="Поиск"/>
                             <Button x:Name="btnClearFilter" DockPanel.Dock="Right" Content=" X " VerticalAlignment="Center" Width="auto" Click="BtnClearFilter_Click"/>
@@ -42,19 +42,20 @@
                         </TreeView>
                     </DockPanel>
                     <GridSplitter HorizontalAlignment="Left" Grid.Column="1" VerticalAlignment="Stretch" Width="5" Background="#FFE9F5FF"/>
-                    <Grid x:Name="pnlRight" Grid.Column="2" Margin="0,3,3,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
-                        <Grid x:Name="pnlForModule" Margin="0" Visibility="Hidden" >
+                    <Grid x:Name="pnlRight" Grid.Column="2" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                        <Grid x:Name="pnlForModule" Margin="0" >
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="80"/>
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <TextBox Grid.Row="0" x:Name="tbxComments"/>
+                            <RichTextBox Grid.Row="0" x:Name="tbxComments"/>
                             <GridSplitter HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Top" Height="5" Background="#FFE9F5FF"/>
-                            <TextBox Grid.Row="2" x:Name="tbxDescript"/>
+                            <RichTextBox Grid.Row="2" x:Name="tbxDescript"/>
                         </Grid>
-                        <DockPanel x:Name="pnlForOther" Visibility="Hidden" Margin="0">
-                            <TextBox x:Name="tbxDescript1" />
+                        <DockPanel x:Name="pnlForOther" Margin="0" Visibility="Hidden" >
+                            <RichTextBox x:Name="rtb" FontFamily="Courier New">
+                            </RichTextBox>
                         </DockPanel>
                     </Grid>
                 </Grid>

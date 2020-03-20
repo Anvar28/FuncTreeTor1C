@@ -31,9 +31,9 @@ namespace FuncTreeFor1CWPF.classes
         public string Name { get; set; }
 
         /// <summary>
-        /// Комментарий функции, тот который находится выше заголовка функции
+        /// Номер строки с которой начинается описание функции
         /// </summary>
-        public List<string> Descript { get; set; }
+        public int IndexStartDescript { get; set; }
 
         /// <summary>
         /// Экспортная функция
@@ -49,6 +49,11 @@ namespace FuncTreeFor1CWPF.classes
         /// Номер строки с которой начинается функция в файле
         /// </summary>
         public int IndexStart { get; set; }
+
+        ///// <summary>
+        ///// Номер строки окончания функции
+        ///// </summary>
+        //public int IndexEnd { get; set; }
 
         /// <summary>
         /// Ссылка на список в котором находится данный элемент
