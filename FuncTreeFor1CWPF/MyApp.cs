@@ -79,29 +79,31 @@ namespace FuncTreeFor1CWPF
             if (_pathToSrc.Length == 0)
                 return;
 
+            // Флаги используются в тасках
             _flagFileSearchEnd = false;
             _flagParsingEnd = false;
+
+            // Очереди обработки, используются в тасках
+            _fileQueue = new FileQueue();
+            _fileTypeQueue = new FileTypesQueue();
+            _finderList = new FinderList();
 
             //
             // Ищем все файлы в отдельном потоке
             //
-
-            _fileQueue = new FileQueue();
             var taskFileSearch = Task.Factory.StartNew(FindFiles);
-            
-            // После выполнения задачи будет сбрасываться флаг
-            taskFileSearch.ContinueWith((task) => { _flagFileSearchEnd = true; });
+
+            //
+            // Запускаем задачу заполнения списка для поиска
+            //
+            Task.Factory.StartNew(FillFinderList);
 
             //
             // Парсим файлы в несколько потоков
             //
 
-            _fileTypeQueue = new FileTypesQueue();
-
             // Определяем сколько ядер в система и создадим столько же потоков по парсингу.
             var numberCores = Environment.ProcessorCount;
-            if (numberCores <= 0)
-                numberCores = 1;
             var tasks = new Task[numberCores];
             for (int i = 0; i < numberCores; i++)
             {
@@ -111,11 +113,6 @@ namespace FuncTreeFor1CWPF
             // После выполнения всез задач будет сбрасываться флаг
             Task.Factory.ContinueWhenAll(tasks, (taskResult) => { _flagParsingEnd = true; });
 
-            //
-            // Заполняем список для поиска
-            //
-            _finderList = new FinderList();
-            new Task(FillFinderList).Start();
         }
 
         public void FillTreeItem(string filter = "")
@@ -168,6 +165,7 @@ namespace FuncTreeFor1CWPF
         private void FindFiles()
         {
             FileSearcher.Search(_fileQueue, _pathToSrc);
+            _flagFileSearchEnd = true;
         }
 
         private void FillFinderList()

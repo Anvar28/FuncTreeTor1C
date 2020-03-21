@@ -49,7 +49,8 @@
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <RichTextBox Grid.Row="0" x:Name="tbxComments"/>
+                            <RichTextBox Grid.Row="0" x:Name="tbxComments" FontFamily="Courier New" Foreground="#FF008D00">
+                            </RichTextBox>
                             <GridSplitter HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Top" Height="5" Background="#FFE9F5FF"/>
                             <RichTextBox Grid.Row="2" x:Name="tbxDescript"/>
                         </Grid>

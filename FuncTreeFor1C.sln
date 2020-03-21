@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuncTreeFor1CTests", "FuncT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuncTreeFor1CWPF", "FuncTreeFor1CWPF\FuncTreeFor1CWPF.csproj", "{6DBF02A7-4A51-45EC-9A40-B572E07119D7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuncTreeFor1CWPFTests", "FuncTreeFor1CWPFTests\FuncTreeFor1CWPFTests.csproj", "{1905AC28-35FA-4989-BD13-7DB3A9D766B0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{6DBF02A7-4A51-45EC-9A40-B572E07119D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DBF02A7-4A51-45EC-9A40-B572E07119D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DBF02A7-4A51-45EC-9A40-B572E07119D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1905AC28-35FA-4989-BD13-7DB3A9D766B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1905AC28-35FA-4989-BD13-7DB3A9D766B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1905AC28-35FA-4989-BD13-7DB3A9D766B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1905AC28-35FA-4989-BD13-7DB3A9D766B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

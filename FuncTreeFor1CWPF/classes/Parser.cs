@@ -64,7 +64,7 @@ namespace FuncTreeFor1CWPF.classes
                     newFunction.Name = str.Substring(indexStartName, firstBracket - indexStartName).Trim();
                     newFunction.IndexStartDescript = GetStartDescriptFunction(text, index);
                     newFunction.Type = typeFunc;
-                    newFunction.IndexStart = indexStartName;
+                    newFunction.IndexStart = index;
                     newFunction.Export = export;
                     result.Add(newFunction);
                 }
@@ -90,22 +90,20 @@ namespace FuncTreeFor1CWPF.classes
                 var strDesc = text[indStart].Trim();
                 if (!ItsComment(strDesc))
                 {
-                    break;
+                    return ++indStart;
                 }
             }
-
             return indStart;
         }
 
         private static bool ItsComment(string str)
         {
-            var result = false;
             var tmpStr = str.Trim();
-            if ((tmpStr.Length > 2) && tmpStr.Substring(0, 2) == "//")
+            if ((tmpStr.Length >= 2) && tmpStr.Substring(0, 2) == "//")
             {
-                result = true;
+                return true;
             }
-            return result;
+            return false;
         }
 
         /// <summary>

@@ -29,11 +29,6 @@ namespace FuncTreeFor1CWPF.classes
             {
                 TreeNode treeNodeItem;
                 treeNodeItem = currentNodeItem.Nodes.FirstOrDefault(x => x.Name == parentItem);
-                //lock (currentNodeItem.Nodes)
-                //{
-                //    var tmp = currentNodeItem.Nodes;
-                //    treeNodeItem = tmp.FirstOrDefault(x => x.Name == parentItem);
-                //}
                 if (treeNodeItem != null)
                 {
                     currentNodeItem = treeNodeItem;
@@ -44,8 +39,11 @@ namespace FuncTreeFor1CWPF.classes
                     var newTreeItem = new TreeNode(parentItem, null);
                     App.Current.Dispatcher.Invoke((System.Action)delegate
                     {
-                        currentNodeItem.Nodes.Add(newTreeItem);
-                    });                    
+                        lock(currentNodeItem.Nodes)
+                        {
+                            currentNodeItem.Nodes.Add(newTreeItem);
+                        }
+                    });
                     currentNodeItem = newTreeItem;
                 }
             }

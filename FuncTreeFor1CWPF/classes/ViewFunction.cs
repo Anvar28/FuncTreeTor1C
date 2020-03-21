@@ -20,9 +20,21 @@ namespace FuncTreeFor1CWPF.classes
 
             IEnumerable<string> result = File.ReadLines(fileModule.FullName).Skip(functionInfo.IndexStartDescript);
 
-            Descript = result.Take(functionInfo.IndexStart - functionInfo.IndexStartDescript).ToList();
+            Descript = new List<string>();
+
+            var descript = result.Take(functionInfo.IndexStart - functionInfo.IndexStartDescript).ToList();
+            foreach (var item in descript)
+            {
+                var tmp = item.Trim();
+                if (tmp.Length > 2)
+                    Descript.Add(tmp.Substring(2).Trim());
+                else
+                    Descript.Add("");
+            }
 
             Text = new List<string>();
+
+            result = result.Skip(functionInfo.IndexStart - functionInfo.IndexStartDescript);
 
             foreach (string str in result)
             {

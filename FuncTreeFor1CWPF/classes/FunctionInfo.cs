@@ -50,11 +50,6 @@ namespace FuncTreeFor1CWPF.classes
         /// </summary>
         public int IndexStart { get; set; }
 
-        ///// <summary>
-        ///// Номер строки окончания функции
-        ///// </summary>
-        //public int IndexEnd { get; set; }
-
         /// <summary>
         /// Ссылка на список в котором находится данный элемент
         /// </summary>
