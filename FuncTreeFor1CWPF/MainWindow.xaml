@@ -8,6 +8,12 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" FontSize="14"
         >
+    <Window.Resources>
+        <ResourceDictionary>
+            <BitmapImage x:Key="imgFunc" UriSource="Resources/func.png"/>
+            <BitmapImage x:Key="imgProc" UriSource="Resources/proc.png"/>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid x:Name="mainGrid">
         <TabControl >
             <TabItem Header="Конфигурация">
@@ -32,12 +38,36 @@
                                 <HierarchicalDataTemplate DataType="{x:Type local2:TreeNode}" ItemsSource="{Binding Nodes}" >
                                     <TextBlock Text="{Binding Name}"></TextBlock>
                                 </HierarchicalDataTemplate>
-                                <HierarchicalDataTemplate DataType="{x:Type local2:TreeNode_Method}" ItemsSource="{Binding Nodes}" >
+                                <DataTemplate DataType="{x:Type local2:TreeNode_Method}">
                                     <StackPanel Orientation="Horizontal">
-
+                                        <Image Width="21" Height="21">
+                                            <Image.Style>
+                                                <Style TargetType="Image">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Type}" Value="function">
+                                                            <Setter Property="Source" Value="{StaticResource imgFunc}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Type}" Value="procedure">
+                                                            <Setter Property="Source" Value="{StaticResource imgProc}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Image.Style>
+                                        </Image>
+                                        <TextBlock Name="methodName" Text="{Binding Name}"></TextBlock>
+                                    </StackPanel>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding Path=Export}" Value="false">
+                                            <Setter TargetName="methodName" Property="Foreground" Value="Silver"/>
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                                <!--<HierarchicalDataTemplate DataType="{x:Type local2:TreeNode_Method}" ItemsSource="{Binding Nodes}" >
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source=""></Image>
                                         <TextBlock Text="{Binding Name}"></TextBlock>
                                     </StackPanel>
-                                </HierarchicalDataTemplate>
+                                </HierarchicalDataTemplate>-->
                             </TreeView.Resources>
                         </TreeView>
                     </DockPanel>

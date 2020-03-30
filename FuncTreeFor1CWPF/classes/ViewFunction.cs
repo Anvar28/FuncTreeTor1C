@@ -20,6 +20,8 @@ namespace FuncTreeFor1CWPF.classes
 
             IEnumerable<string> result = File.ReadLines(fileModule.FullName).Skip(functionInfo.IndexStartDescript);
 
+            // Читаем описание функции, это комментарий перед функцией
+
             Descript = new List<string>();
 
             var descript = result.Take(functionInfo.IndexStart - functionInfo.IndexStartDescript).ToList();
@@ -31,6 +33,8 @@ namespace FuncTreeFor1CWPF.classes
                 else
                     Descript.Add("");
             }
+
+            // Читаем тело функции
 
             Text = new List<string>();
 
