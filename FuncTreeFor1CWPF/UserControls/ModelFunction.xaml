@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="FuncTreeFor1CWPF.UserControls.ModelFunction"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FuncTreeFor1CWPF.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <RichTextBox Grid.Row="0" x:Name="tbxDescript" FontFamily="Courier New" Foreground="#FF008D00">
+        </RichTextBox>
+        <GridSplitter HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Top" Height="5" Background="#FFE9F5FF"/>
+        <RichTextBox Grid.Row="2" x:Name="tbxBody"/>
+    </Grid>
+</UserControl>

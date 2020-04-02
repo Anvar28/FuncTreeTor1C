@@ -39,8 +39,8 @@
                                     <TextBlock Text="{Binding Name}"></TextBlock>
                                 </HierarchicalDataTemplate>
                                 <DataTemplate DataType="{x:Type local2:TreeNode_Method}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Width="21" Height="21">
+                                    <StackPanel Orientation="Horizontal" MinHeight="21">
+                                        <Image Width="16" Height="16" Margin="0,0,5,0">
                                             <Image.Style>
                                                 <Style TargetType="Image">
                                                     <Style.Triggers>
@@ -62,32 +62,27 @@
                                         </DataTrigger>
                                     </DataTemplate.Triggers>
                                 </DataTemplate>
-                                <!--<HierarchicalDataTemplate DataType="{x:Type local2:TreeNode_Method}" ItemsSource="{Binding Nodes}" >
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Source=""></Image>
-                                        <TextBlock Text="{Binding Name}"></TextBlock>
-                                    </StackPanel>
-                                </HierarchicalDataTemplate>-->
                             </TreeView.Resources>
                         </TreeView>
                     </DockPanel>
                     <GridSplitter HorizontalAlignment="Left" Grid.Column="1" VerticalAlignment="Stretch" Width="5" Background="#FFE9F5FF"/>
                     <Grid x:Name="pnlRight" Grid.Column="2" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
-                        <Grid x:Name="pnlForModule" Margin="0" >
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="80"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <RichTextBox Grid.Row="0" x:Name="tbxComments" FontFamily="Courier New" Foreground="#FF008D00">
-                            </RichTextBox>
-                            <GridSplitter HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Top" Height="5" Background="#FFE9F5FF"/>
-                            <RichTextBox Grid.Row="2" x:Name="tbxDescript"/>
-                        </Grid>
-                        <DockPanel x:Name="pnlForOther" Margin="0" Visibility="Hidden" >
-                            <RichTextBox x:Name="rtb" FontFamily="Courier New">
-                            </RichTextBox>
-                        </DockPanel>
+                        <TabControl x:Name="OpenedFiles">
+                            <TabControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Margin="0" Padding="0" VerticalAlignment="Center"> 
+                                        <TextBlock Text="{Binding Header}" Height="20"/>
+                                        <Button Height="20" Width="20" Content="x" Focusable="False" BorderBrush="Silver"/>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </TabControl.ItemTemplate>
+                            <TabControl.ItemContainerStyle>
+                                <Style>
+                                    <Setter Property="TabItem.ToolTip" Value="{Binding ToolTip}"/>
+                                    <Setter Property="TabItem.Content" Value="{Binding TabContent}"/>
+                                </Style>
+                            </TabControl.ItemContainerStyle>
+                        </TabControl>
                     </Grid>
                 </Grid>
             </TabItem>
