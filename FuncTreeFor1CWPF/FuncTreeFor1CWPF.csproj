@@ -65,6 +65,9 @@
     <Compile Include="UserControls\ModelOtherFile.xaml.cs">
       <DependentUpon>ModelOtherFile.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\ModelPicture.xaml.cs">
+      <DependentUpon>ModelPicture.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -91,8 +94,6 @@
     <Compile Include="classes\TreeNode.cs" />
     <Compile Include="classes\TreeNodes.cs" />
     <Compile Include="classes\Tree.cs" />
-    <Compile Include="classes\ViewFunction.cs" />
-    <Compile Include="classes\ViewOtherFile.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -102,6 +103,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\ModelOtherFile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ModelPicture.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

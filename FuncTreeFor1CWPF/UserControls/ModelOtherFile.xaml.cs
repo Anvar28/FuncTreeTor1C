@@ -1,5 +1,7 @@
-﻿using System;
+﻿using FuncTreeFor1CWPF.classes;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,9 +22,23 @@ namespace FuncTreeFor1CWPF.UserControls
     /// </summary>
     public partial class ModelOtherFile : UserControl
     {
-        public ModelOtherFile()
+
+        FileType fileModule;
+
+        public ModelOtherFile(FileType obj)
         {
             InitializeComponent();
+
+            fileModule = obj;
+            var text = File.ReadAllLines(fileModule.FullName);
+
+            tbxBody.Document.Blocks.Clear();
+            var paragraph = new Paragraph();
+            foreach (var str in text)
+            {
+                paragraph.Inlines.Add(str + "\r\n");
+            }
+            tbxBody.Document.Blocks.Add(paragraph);
         }
     }
 }

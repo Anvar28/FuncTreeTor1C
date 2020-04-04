@@ -15,6 +15,7 @@ namespace FuncTreeFor1CWPF.classes
         const string extensionPNG = ".png";
         const string extensionMXLX = ".mxls";
         const string extensionHTML = ".html";
+        const string extensionZIP = ".zip";
 
         /// <summary>
         /// 
@@ -46,6 +47,10 @@ namespace FuncTreeFor1CWPF.classes
             else if (file.Extension == extensionHTML)
             {
                 newFileType = new FileHTML();
+            }
+            else if (file.Extension == extensionZIP)
+            {
+                newFileType = new FileZIP();
             }
             else
             {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace FuncTreeFor1CWPF.classes
 {
     /// <summary>
-    /// Базоый класс файлов
+    /// Базовый класс файлов
     /// </summary>
     public abstract class FileType
     {
@@ -60,6 +60,13 @@ namespace FuncTreeFor1CWPF.classes
     /// Файл html
     /// </summary>
     public class FileHTML : FileType
+    {
+    }
+
+    /// <summary>
+    /// Файл ZIP
+    /// </summary>
+    public class FileZIP : FileType
     {
     }
 

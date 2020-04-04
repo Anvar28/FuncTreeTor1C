@@ -80,6 +80,11 @@ namespace FuncTreeFor1CWPF
 
             var obj = ((FuncTreeFor1CWPF.classes.TreeNode)selectNode).Obj;
 
+            if (obj == null)
+            {
+                return;
+            }
+
             // Проверка есть ли уже открытая вкладка с данным объектом
             var existTab = tabList.FirstOrDefault(x => x.Obj == obj);
             if (existTab != null)
@@ -90,9 +95,11 @@ namespace FuncTreeFor1CWPF
 
             // Создаем новую вкладку и добавляем
             var newTab = TabItemInfoFabric.NewTabItemInfo(obj);
-            tabList.Add(newTab);
-            OpenedFiles.SelectedItem = newTab;
-
+            if (newTab != null)
+            {
+                tabList.Add(newTab);
+                OpenedFiles.SelectedItem = newTab;
+            }
         }
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {

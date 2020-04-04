@@ -17,8 +17,19 @@ namespace FuncTreeFor1CWPF.classes
         /// <returns></returns>
         public static TabItemInfo NewTabItemInfo(object obj)
         {
+            if (obj == null)
+            {
+                return null;
+            }
+
             var descript = GetNameAndToolTip(obj);
             var model = GetModel(obj);
+            
+            // Для некоторых типов объектов, моделей может не быть.
+            if (model == null)
+            {
+                return null;
+            }
 
             var tabInfo = new TabItemInfo(obj)
             {
@@ -44,7 +55,7 @@ namespace FuncTreeFor1CWPF.classes
 
             if (obj is FileModule)
             {
-                result = new ModelOtherFile();
+                result = new ModelOtherFile((FileType)obj);
             }
             else if (obj is FunctionInfo)
             {
@@ -52,27 +63,31 @@ namespace FuncTreeFor1CWPF.classes
             }
             else if (obj is FileForm)
             {
-                result = new ModelOtherFile();
+                result = new ModelOtherFile((FileType)obj);
             }
             else if (obj is FileMdo)
             {
-                result = new ModelOtherFile();
+                result = new ModelOtherFile((FileType)obj);
             }
             else if (obj is FilePicture)
             {
-                result = new ModelOtherFile();
+                result = new ModelPicture((FilePicture)obj);
             }
             else if (obj is FileMXLX)
             {
-                result = new ModelOtherFile();
+                result = new ModelOtherFile((FileType)obj);
             }
             else if (obj is FileHTML)
             {
-                result = new ModelOtherFile();
+                result = new ModelOtherFile((FileType)obj);
+            }
+            else if (obj is FileZIP)
+            {
+                result = null;
             }
             else if (obj is FileOther)
             {
-                result = new ModelOtherFile();
+                result = new ModelOtherFile((FileType)obj);
             }
             else
             {
