@@ -1,4 +1,5 @@
 ﻿using FuncTreeFor1CWPF.classes;
+using FuncTreeFor1CWPF.FileTypes;
 using System;
 using System.Collections.Generic;
 using System.IO;

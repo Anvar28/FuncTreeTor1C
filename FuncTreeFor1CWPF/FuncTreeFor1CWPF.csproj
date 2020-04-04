@@ -59,6 +59,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="classes\TabItemInfoFabric.cs" />
+    <Compile Include="FileTypes\FileOther.cs" />
+    <Compile Include="FileTypes\FileZIP.cs" />
+    <Compile Include="FileTypes\FileHTML.cs" />
+    <Compile Include="FileTypes\FileMXLX.cs" />
+    <Compile Include="FileTypes\FilePicture.cs" />
+    <Compile Include="FileTypes\FileForm.cs" />
+    <Compile Include="FileTypes\FileMdo.cs" />
+    <Compile Include="FileTypes\FileModule.cs" />
     <Compile Include="UserControls\ModelFunction.xaml.cs">
       <DependentUpon>ModelFunction.xaml</DependentUpon>
     </Compile>
@@ -78,8 +86,8 @@
     </Compile>
     <Compile Include="classes\FileQueue.cs" />
     <Compile Include="classes\FileSearcher.cs" />
-    <Compile Include="classes\FileTypes.cs" />
-    <Compile Include="classes\FileTypesQueue.cs" />
+    <Compile Include="FileTypes\FileType.cs" />
+    <Compile Include="FileTypes\FileTypesQueue.cs" />
     <Compile Include="classes\Finder.cs" />
     <Compile Include="classes\FinderItem.cs" />
     <Compile Include="classes\FinderList.cs" />
@@ -88,7 +96,7 @@
     <Compile Include="classes\global.cs" />
     <Compile Include="classes\Loger.cs" />
     <Compile Include="classes\Parser.cs" />
-    <Compile Include="classes\FileTypeFabric.cs" />
+    <Compile Include="FileTypes\FileTypeFabric.cs" />
     <Compile Include="classes\TabItemInfo.cs" />
     <Compile Include="classes\TabItemInfoList.cs" />
     <Compile Include="classes\TreeNode.cs" />

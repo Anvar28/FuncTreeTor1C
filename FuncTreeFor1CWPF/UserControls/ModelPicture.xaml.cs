@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using FuncTreeFor1CWPF.FileTypes;
 
 namespace FuncTreeFor1CWPF.UserControls
 {
