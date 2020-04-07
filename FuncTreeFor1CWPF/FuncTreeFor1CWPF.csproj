@@ -67,6 +67,7 @@
     <Compile Include="FileTypes\FileForm.cs" />
     <Compile Include="FileTypes\FileMdo.cs" />
     <Compile Include="FileTypes\FileModule.cs" />
+    <Compile Include="TreeNodes\TreeNode_Method.cs" />
     <Compile Include="UserControls\ModelFunction.xaml.cs">
       <DependentUpon>ModelFunction.xaml</DependentUpon>
     </Compile>
@@ -99,8 +100,8 @@
     <Compile Include="FileTypes\FileTypeFabric.cs" />
     <Compile Include="classes\TabItemInfo.cs" />
     <Compile Include="classes\TabItemInfoList.cs" />
-    <Compile Include="classes\TreeNode.cs" />
-    <Compile Include="classes\TreeNodes.cs" />
+    <Compile Include="TreeNodes\TreeNode.cs" />
+    <Compile Include="classes\TreeNodeList.cs" />
     <Compile Include="classes\Tree.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FuncTreeFor1CWPF.TreeNodes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,12 +11,12 @@ namespace FuncTreeFor1CWPF.classes
     {
         const string strConfiguration = "Конфигурация";
 
-        public TreeNodes Nodes { get; }
+        public TreeNodeList Nodes { get; }
         public TreeNode Root { get; }
 
         public Tree()
         {
-            Nodes = new TreeNodes();
+            Nodes = new TreeNodeList();
             Root = new TreeNode(strConfiguration, null);
             Nodes.Add(Root);
         }

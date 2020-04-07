@@ -1,5 +1,6 @@
 ﻿using FuncTreeFor1CWPF.classes;
 using FuncTreeFor1CWPF.UserControls;
+using FuncTreeFor1CWPF.TreeNodes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -73,12 +74,12 @@ namespace FuncTreeFor1CWPF
         {
             // Проверка выделен ли какой либо элемент дерева
             var selectNode = ((System.Windows.Controls.TreeView)e.Source).SelectedValue;
-            if (!(selectNode is FuncTreeFor1CWPF.classes.TreeNode))
+            if (!(selectNode is FuncTreeFor1CWPF.TreeNodes.TreeNode))
             {
                 return;
             }
 
-            var obj = ((FuncTreeFor1CWPF.classes.TreeNode)selectNode).Obj;
+            var obj = ((FuncTreeFor1CWPF.TreeNodes.TreeNode)selectNode).Obj;
 
             if (obj == null)
             {
