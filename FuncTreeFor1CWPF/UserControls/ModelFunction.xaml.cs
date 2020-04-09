@@ -22,13 +22,13 @@ namespace FuncTreeFor1CWPF.UserControls
     /// </summary>
     public partial class ModelFunction : UserControl
     {
-        FunctionInfo FunctionInfo;
+        FunctionInfo _functionInfo;
 
         public ModelFunction(FunctionInfo functionInfo)
         {
             InitializeComponent();
 
-            FunctionInfo = functionInfo;
+            _functionInfo = functionInfo;
 
             var fileModule = functionInfo.FunctionList.FileModule;
             if (fileModule == null)

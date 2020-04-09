@@ -64,11 +64,11 @@ namespace FuncTreeFor1CWPF.classes
             }
             else if (obj is FileForm)
             {
-                result = new ModelOtherFile((FileType)obj);
+                result = new ModelXML((FileType)obj);
             }
             else if (obj is FileMdo)
             {
-                result = new ModelOtherFile((FileType)obj);
+                result = new ModelXML((FileType)obj);
             }
             else if (obj is FilePicture)
             {
@@ -76,11 +76,11 @@ namespace FuncTreeFor1CWPF.classes
             }
             else if (obj is FileMXLX)
             {
-                result = new ModelOtherFile((FileType)obj);
+                result = new ModelXML((FileType)obj);
             }
             else if (obj is FileHTML)
             {
-                result = new ModelOtherFile((FileType)obj);
+                result = new ModelXML((FileType)obj);
             }
             else if (obj is FileZIP)
             {

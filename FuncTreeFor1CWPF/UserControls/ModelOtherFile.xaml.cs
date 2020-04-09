@@ -24,14 +24,14 @@ namespace FuncTreeFor1CWPF.UserControls
     public partial class ModelOtherFile : UserControl
     {
 
-        FileType fileModule;
+        FileType _file;
 
-        public ModelOtherFile(FileType obj)
+        public ModelOtherFile(FileType file)
         {
             InitializeComponent();
 
-            fileModule = obj;
-            var text = File.ReadAllLines(fileModule.FullName);
+            _file = file;
+            var text = File.ReadAllLines(_file.FullName);
 
             tbxBody.Document.Blocks.Clear();
             var paragraph = new Paragraph();

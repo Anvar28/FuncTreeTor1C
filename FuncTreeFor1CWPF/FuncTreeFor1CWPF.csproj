@@ -77,6 +77,11 @@
     <Compile Include="UserControls\ModelPicture.xaml.cs">
       <DependentUpon>ModelPicture.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\ModelXML.xaml.cs">
+      <DependentUpon>ModelXML.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="XMLTree\XMLTreeNode.cs" />
+    <Compile Include="XMLTree\XMLTreeNodeList.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -116,6 +121,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\ModelPicture.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ModelXML.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -17,6 +17,7 @@ namespace FuncTreeFor1CWPF.classes
         const string extensionMXLX = ".mxls";
         const string extensionHTML = ".html";
         const string extensionZIP = ".zip";
+        const string extensionFORM = ".form";
 
         /// <summary>
         /// 
@@ -52,6 +53,10 @@ namespace FuncTreeFor1CWPF.classes
             else if (file.Extension == extensionZIP)
             {
                 newFileType = new FileZIP();
+            }
+            else if (file.Extension == extensionFORM)
+            {
+                newFileType = new FileForm();
             }
             else
             {
