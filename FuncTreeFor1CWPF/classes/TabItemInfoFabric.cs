@@ -24,7 +24,15 @@ namespace FuncTreeFor1CWPF.classes
             }
 
             var descript = GetNameAndToolTip(obj);
-            var model = GetModel(obj);
+            FrameworkElement model = null;
+            try
+            {
+                model = GetModel(obj);
+            }
+            catch (Exception)
+            {
+                return null;
+            }             
             
             // Для некоторых типов объектов, моделей может не быть.
             if (model == null)
@@ -64,11 +72,11 @@ namespace FuncTreeFor1CWPF.classes
             }
             else if (obj is FileForm)
             {
-                result = new ModelXML((FileType)obj);
+                result = NewModelXML((FileType)obj);
             }
             else if (obj is FileMdo)
             {
-                result = new ModelXML((FileType)obj);
+                result = NewModelXML((FileType)obj);
             }
             else if (obj is FilePicture)
             {
@@ -76,11 +84,11 @@ namespace FuncTreeFor1CWPF.classes
             }
             else if (obj is FileMXLX)
             {
-                result = new ModelXML((FileType)obj);
+                result = NewModelXML((FileType)obj);
             }
             else if (obj is FileHTML)
             {
-                result = new ModelXML((FileType)obj);
+                result = NewModelXML((FileType)obj);
             }
             else if (obj is FileZIP)
             {
@@ -98,6 +106,21 @@ namespace FuncTreeFor1CWPF.classes
             return result;
         }
 
+        static FrameworkElement NewModelXML(FileType obj)
+        {
+            FrameworkElement result = null;
+            try
+            {
+                // Если при анализе XML будет ошибка, то файл будет открыт в обычном текстовом режиме
+                result = new ModelXML((FileType)obj);
+            }
+            catch (Exception)
+            {
+                result = new ModelOtherFile((FileType)obj);
+            }
+            return result;
+        }
+
         /// <summary>
         /// Возвращает наименование закладки и подсказку
         /// </summary>
@@ -106,7 +129,6 @@ namespace FuncTreeFor1CWPF.classes
         private static (string Name, string ToolTip) GetNameAndToolTip(object obj)
         {
             var name = "";
-            var toolTip = "";
 
             FileType fileType = null;
             if (obj is FileType)
@@ -126,7 +148,7 @@ namespace FuncTreeFor1CWPF.classes
                 throw new Exception(" Не определен тип.");
             }
 
-            toolTip = fileType.FullName;
+            var toolTip = fileType.FullName;
 
             return (name, toolTip);
         }

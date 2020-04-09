@@ -36,7 +36,15 @@ namespace FuncTreeFor1CWPF.UserControls
             _file = file;
 
             var document = new XmlDocument();
-            document.Load(file.FullName);
+            try
+            {
+                document.Load(file.FullName);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Ошибка анализа XML файла");
+                throw;
+            }
             XmlNode root = document.DocumentElement;
 
             FillNode(root, nodes);
