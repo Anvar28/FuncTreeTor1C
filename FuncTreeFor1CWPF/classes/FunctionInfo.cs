@@ -100,10 +100,27 @@ namespace FuncTreeFor1CWPF.classes
                         || (tmpStr.Length >= 14 && tmpStr.Substring(0, 14) == "конецпроцедуры"))
                     {
                         break;
-                    }                        
+                    }
                 }
                 return result;
             }
+        }
+
+        /// <summary>
+        /// Области в которых находится функция
+        /// </summary>
+        string[] _area;
+        public string[] Area
+        {
+            get
+            {
+                if (_area == null)
+                {
+                    _area = new string[0];
+                }
+                return _area;
+            }
+            set { _area = value; }
         }
     }
 }

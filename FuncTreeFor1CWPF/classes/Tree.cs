@@ -66,10 +66,7 @@ namespace FuncTreeFor1CWPF.classes
                 // Новый элемент, это не понятно что.
                 newTreeNodeItem = new TreeNode(finderItem.Name, finderItem.Object);
             }
-            App.Current.Dispatcher.Invoke((System.Action)delegate
-            {
-                currentNodeItem.Nodes.Add(newTreeNodeItem);
-            });
+            currentNodeItem.Nodes.Add(newTreeNodeItem);
         }
 
         public void Fill(IOrderedEnumerable<FinderItem> selectFinderList)

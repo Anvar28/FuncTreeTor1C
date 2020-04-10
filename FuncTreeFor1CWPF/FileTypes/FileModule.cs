@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace FuncTreeFor1CWPF.FileTypes
 {
+
     /// <summary>
     /// Файл модуля
     /// </summary>

@@ -101,5 +101,44 @@ namespace FuncTreeFor1CWPF.classes.Tests
             Assert.IsTrue(resut[1].Name == "тест2");
             Assert.IsTrue(resut[1].Type == TypeFunction.procedure);
         }
+        [TestMethod()]
+        public void ParseTest_area_1()
+        {
+            var resut = NewParse(@"// Описание
+                процедура тест() экспорт
+                #область тест1
+                // процедура
+                // функция
+                //
+                процедура тест2() экспорт
+                #КонецОбласти
+                ");
+            Assert.IsTrue(resut.Count() == 2);
+            Assert.IsTrue(resut[0].Area.Length == 0);
+            Assert.IsTrue(resut[1].Area.Length == 1);
+            Assert.IsTrue(resut[1].Area[0] == "тест1");
+        }
+        [TestMethod()]
+        public void ParseTest_area_tree()
+        {
+            var resut = NewParse(@"// Описание
+                процедура тест1() экспорт
+                #область Область1
+                // процедура
+                // функция
+                //
+                процедура тест2() экспорт
+                #область Область12
+                процедура тест2() экспорт
+                #КонецОбласти
+                #КонецОбласти
+                ");
+            Assert.IsTrue(resut[0].Area.Length == 0);
+            Assert.IsTrue(resut[1].Area.Length == 1);
+            Assert.IsTrue(resut[1].Area[0] == "Область1");
+            Assert.IsTrue(resut[2].Area.Length == 2);
+            Assert.IsTrue(resut[2].Area[0] == "Область1");
+            Assert.IsTrue(resut[2].Area[1] == "Область12");
+        }
     }
 }

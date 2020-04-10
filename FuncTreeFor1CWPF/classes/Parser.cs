@@ -18,6 +18,8 @@ namespace FuncTreeFor1CWPF.classes
         const string strProc = "процедура";
         const string strFunc = "функция";
         const string strExport = "экспорт";
+        const string strAreaBegin = "#область";
+        const string strAreaEnd = "#конецобласти";
 
         /// <summary>
         /// Парсит переданный текст на наличие функций и процедур
@@ -29,12 +31,27 @@ namespace FuncTreeFor1CWPF.classes
             var result = new FunctionList(fileModule);
             var countLines = text.Count();
             var index = 0;
+            var areas = new Stack<string>();
+
             while (index < countLines)
             {
                 var str = text[index].Trim();
                 var strLow = str.ToLower();
                 var indexStartName = 0;
                 TypeFunction typeFunc = TypeFunction.function;
+
+                // Если начало области, то поместим в стек ее название
+                if (strLow.StartsWith(strAreaBegin))
+                {
+                    areas.Push(str.Substring(strAreaBegin.Length + 1));
+                }
+
+                // Если конец области то уберем имя последней области из стека
+                if (strLow.StartsWith(strAreaEnd))
+                {
+                    if (areas.Count > 0)
+                        areas.Pop();
+                }
 
                 // Определяем процедура или функция.
                 if (strLow.IndexOf(strProc) == 0)
@@ -44,7 +61,7 @@ namespace FuncTreeFor1CWPF.classes
                 }
                 else if (strLow.IndexOf(strFunc) == 0)
                 {
-                    indexStartName = strFunc.Length;                 
+                    indexStartName = strFunc.Length;
                 }
 
                 if (indexStartName > 0)
@@ -67,6 +84,10 @@ namespace FuncTreeFor1CWPF.classes
                     newFunction.Type = typeFunc;
                     newFunction.IndexStart = index;
                     newFunction.Export = export;
+                    if (areas.Count > 0)
+                    {
+                        newFunction.Area = areas.ToArray().Reverse().ToArray();
+                    }                        
                     result.Add(newFunction);
                 }
                 index++;

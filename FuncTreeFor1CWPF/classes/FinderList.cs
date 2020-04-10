@@ -23,6 +23,7 @@ namespace FuncTreeFor1CWPF.classes
                 {
                     var newFinderItem = Add(item.Name, item);
                     newFinderItem.Parents.AddRange(mParents);
+                    newFinderItem.Parents.AddRange(item.Area);
                     newFinderItem.Export = item.Export;
                     result.Add(newFinderItem);
                 }
