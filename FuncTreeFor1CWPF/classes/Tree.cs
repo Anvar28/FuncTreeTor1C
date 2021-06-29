@@ -22,8 +22,8 @@ namespace FuncTreeFor1CWPF.classes
         }
 
         public void Add(FinderItem finderItem)
-        {                 
-            
+        {
+
             // Добавляем родителей элемента
             var currentNodeItem = Root;
             foreach (var parentItem in finderItem.Parents)
@@ -38,13 +38,13 @@ namespace FuncTreeFor1CWPF.classes
                 {
                     // Очередная ветвь дерева не найдена, создаем новую
                     var newTreeItem = new TreeNode(parentItem, null);
-                    App.Current.Dispatcher.Invoke((System.Action)delegate
+                    lock (currentNodeItem.Nodes)
                     {
-                        lock(currentNodeItem.Nodes)
+                        App.Current.Dispatcher.Invoke((System.Action)delegate
                         {
                             currentNodeItem.Nodes.Add(newTreeItem);
-                        }
-                    });
+                        });
+                    }
                     currentNodeItem = newTreeItem;
                 }
             }
@@ -66,7 +66,13 @@ namespace FuncTreeFor1CWPF.classes
                 // Новый элемент, это не понятно что.
                 newTreeNodeItem = new TreeNode(finderItem.Name, finderItem.Object);
             }
-            currentNodeItem.Nodes.Add(newTreeNodeItem);
+            lock (currentNodeItem.Nodes)
+            {
+                App.Current.Dispatcher.Invoke((System.Action)delegate
+                {
+                    currentNodeItem.Nodes.Add(newTreeNodeItem);
+                });
+            }
         }
 
         public void Fill(IOrderedEnumerable<FinderItem> selectFinderList)

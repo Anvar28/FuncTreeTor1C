@@ -23,7 +23,6 @@ namespace FuncTreeFor1CWPF.classes
                 return null;
             }
 
-            var descript = GetNameAndToolTip(obj);
             FrameworkElement model = null;
             try
             {
@@ -40,6 +39,7 @@ namespace FuncTreeFor1CWPF.classes
                 return null;
             }
 
+            var descript = GetNameAndToolTip(obj);
             var tabInfo = new TabItemInfo(obj)
             {
                 Header = descript.Name,
@@ -126,7 +126,7 @@ namespace FuncTreeFor1CWPF.classes
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        private static (string Name, string ToolTip) GetNameAndToolTip(object obj)
+        private static TabItemInfoInformation GetNameAndToolTip(object obj)
         {
             var name = "";
 
@@ -150,7 +150,20 @@ namespace FuncTreeFor1CWPF.classes
 
             var toolTip = fileType.FullName;
 
-            return (name, toolTip);
+            return new TabItemInfoInformation(name, toolTip);
         }
+    }
+
+    class TabItemInfoInformation
+    {
+
+        public TabItemInfoInformation(string name, string toolTip)
+        {
+            Name = name;
+            ToolTip = toolTip;
+        }
+
+        public string Name { get; set; }
+        public string ToolTip { get; set; }
     }
 }
