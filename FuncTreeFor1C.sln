@@ -3,10 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29215.179
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuncTreeFor1C", "FuncTreeFor1C\FuncTreeFor1C.csproj", "{2AA830B8-F37B-4CA8-A9CA-90833900EAFB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuncTreeFor1CTests", "FuncTreeFor1CTests\FuncTreeFor1CTests.csproj", "{3AAF590B-E4E5-4FB2-8389-5E27D1316F29}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuncTreeFor1CWPF", "FuncTreeFor1CWPF\FuncTreeFor1CWPF.csproj", "{6DBF02A7-4A51-45EC-9A40-B572E07119D7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuncTreeFor1CWPFTests", "FuncTreeFor1CWPFTests\FuncTreeFor1CWPFTests.csproj", "{1905AC28-35FA-4989-BD13-7DB3A9D766B0}"
@@ -17,14 +13,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2AA830B8-F37B-4CA8-A9CA-90833900EAFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2AA830B8-F37B-4CA8-A9CA-90833900EAFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2AA830B8-F37B-4CA8-A9CA-90833900EAFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2AA830B8-F37B-4CA8-A9CA-90833900EAFB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3AAF590B-E4E5-4FB2-8389-5E27D1316F29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3AAF590B-E4E5-4FB2-8389-5E27D1316F29}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3AAF590B-E4E5-4FB2-8389-5E27D1316F29}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3AAF590B-E4E5-4FB2-8389-5E27D1316F29}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6DBF02A7-4A51-45EC-9A40-B572E07119D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6DBF02A7-4A51-45EC-9A40-B572E07119D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DBF02A7-4A51-45EC-9A40-B572E07119D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
